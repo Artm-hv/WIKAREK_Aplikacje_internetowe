@@ -29,6 +29,7 @@
         }
         .minmax-box {
             width: 100%;
+            min-width: 200px;
             max-width: 290px;
             border: 2px solid #27ae60;
             padding: 10px;
@@ -39,20 +40,20 @@
     </style>
 </head>
 <body>
-    <h2>CSS Box Model: Padding, Border, Margin & Overflow</h2>
+    <h2>CSS Box Model: Padding, Border, Margin &amp; Overflow</h2>
     <div class="box-demo">
         <strong>Box Model:</strong><br>
-        Padding: 20px<br>
+        Padding: 15px<br>
         Border: 4px solid #3498db<br>
-        Margin: 20px
+        Margin: 15px
     </div>
     <h3>Przepełnienie (Własność overflow: scroll)</h3>
     <div class="overflow-box">
-        Ten element posiada stałą wysokość 90px oraz szerokość 300px. Dzięki właściwości overflow: scroll cała nadmiarowa treść jest dostępna za pomocą wygodnych pasków przewijania bez rozbijania geometrii pozostałych elementów strony.
+        Ten element posiada stałą wysokość 90px oraz szerokość dostosowaną do kontenera. Dzięki właściwości overflow: scroll cała nadmiarowa treść jest dostępna za pomocą pasków przewijania bez rozbijania geometrii pozostałych elementów strony.
     </div>
     <h3>Ograniczenia rozmiarów (min-width / max-width)</h3>
     <div class="minmax-box">
-        Ten kontener posiada reguły <code>min-width: 200px</code> oraz <code>max-width: 450px</code>, co gwarantuje elastyczność i skalowalność przy zmianie szerokości okna przeglądarki.
+        Ten kontener posiada reguły <code>min-width: 200px</code> oraz <code>max-width: 290px</code>, co gwarantuje pełną elastyczność i brak poziomego przepełnienia na urządzeniach mobilnych.
     </div>
 </body>
 </html>

@@ -47,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_user_login'])) {
         }
 
         // Weryfikacja hasła
-        if (password_verify($haslo, $user['haslo']) || ($haslo === 'student' && $user['login'] === 'student') || ($haslo === 'haslo123')) {
+        if (password_verify($haslo, $user['haslo'])) {
+            session_regenerate_id(true);
             // Sukces logowania -> reset liczników
             $uid = $user['id'];
             $conn->query("UPDATE " . TBL_PREFIX . "konta SET nieudane_proby = 0, zablokowany_do = NULL WHERE id = $uid");

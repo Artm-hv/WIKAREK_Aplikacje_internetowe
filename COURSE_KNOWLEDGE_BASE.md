@@ -532,7 +532,7 @@
     * Заголовки запиту: `Host:`, `User-Agent:`, `Accept:`, `Authorization: Basic <base64>`.
     * Заголовки відповіді: `Server:`, `Date:`, `Content-Type:`, `Content-Length:`, `Last-Modified:`, `ETag:`, `WWW-Authenticate: Basic realm="..."`.
     * Статуси відповіді (слайд 21–25): `200 OK`, `301 Moved Permanently`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `500 Internal Server Error`.
-    * Розрахунок Basic Auth: рядок `login:haslo` кодується алгоритмом Base64 (`wykładowca:wykładowca` -> `d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=`, слайд 44).
+    * Розрахунок Basic Auth: рядок `login:haslo` кодується алгоритмом Base64 (`wykładowca:wykładowca` -> `d3lrbGFkb3djYTp3eWtsYWRvd2Nh`, слайд 44).
   * **Протокол FTP (RFC 959, слайди 51–80):**
     * Двоканальна модель: канал керування (Control Connection, TCP порт `21`) та канал даних (Data Connection, DTP).
     * Активний режим (Active Mode, команда `PORT h1,h2,h3,h4,p1,p2`).
@@ -884,7 +884,7 @@
        * `HEAD /index.html HTTP/1.1\r\nHost: www.student.pl\r\n\r\n` + докладний коментар значення кожного рядка заголовка — **4p**.
      * Підключення до `10.0.0.41:80` (домен `www.wykladowca.pl`, логін `wykładowca`, пароль `wykładowca`):
        * `GET /index.html` та `GET /materialy.html` із заголовком `Authorization: Basic <base64>` — **8p**.
-       * *Розрахунок Base64 викладача:* Рядок `wykładowca:wykładowca` в UTF-8 кодується як `d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=` (або в ISO-8859-2 як `d3lrbLFkb3djYTp3eWtsbLFkb3djYQ==`).
+       * *Розрахунок Base64 викладача:* Рядок `wykładowca:wykładowca` в UTF-8 кодується як `d3lrbGFkb3djYTp3eWtsYWRvd2Nh` (або в ISO-8859-2 як `d3lrbGFkb3djYTp3eWtsYWRvd2Nh`).
   2. **Протоколи SMTP та POP3 (32p) -> файл `poczta.txt`:**
      * Поштовий сервер `poczta.student.pl` (`10.0.0.41`), акаунти `student1@poczta.student.pl` (пароль `student1`), `student2` і т.д.
      * SMTP (порт 25):

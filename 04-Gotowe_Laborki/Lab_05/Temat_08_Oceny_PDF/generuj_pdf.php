@@ -2,8 +2,30 @@
 require_once __DIR__ . '/konfig.php';
 require_once __DIR__ . '/fpdf/fpdf.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $conn = get_db_connection();
-$oceny = $conn->query("SELECT * FROM " . TBL_PREFIX . "oceny ORDER BY kod_przedmiotu ASC, nr_albumu ASC");
+
+$is_admin = isset($_SESSION['admin_auth']);
+$student_album = isset($_SESSION['current_student_album']) ? $_SESSION['current_student_album'] : '';
+
+if (!$is_admin && empty($student_album)) {
+    die("Brak uprawnien do generowania raportu PDF. Zaloguj sie jako prowadzacy lub wyszukaj swoj album na stronie glownej.");
+}
+
+if ($is_admin) {
+    $oceny = $conn->query("SELECT * FROM " . TBL_PREFIX . "oceny ORDER BY kod_przedmiotu ASC, nr_albumu ASC");
+} else {
+    $a_clean = ltrim(ltrim(strtolower($student_album), 's'), '0');
+    $a_full = 's0' . $a_clean;
+    $a_short = 's' . $a_clean;
+    $a_num = $a_clean;
+    $stmt_p = $conn->prepare("SELECT * FROM " . TBL_PREFIX . "oceny WHERE (nr_albumu IN (?, ?, ?, ?)) ORDER BY kod_przedmiotu ASC, data_zaliczenia ASC");
+    $stmt_p->bind_param("ssss", $student_album, $a_full, $a_short, $a_num);
+    $stmt_p->execute();
+    $oceny = $stmt_p->get_result();
+}
 
 class PDF extends FPDF {
     function Header() {
@@ -41,7 +63,7 @@ $pdf->SetTextColor(40, 40, 40);
 
 while($r = $oceny->fetch_assoc()) {
     $pdf->Cell(25, 7, iconv('UTF-8', 'ISO-8859-2//TRANSLIT', $r['kod_przedmiotu']), 1, 0, 'C');
-    $pdf->Cell(65, 7, iconv('UTF-8', 'ISO-8859-2//TRANSLIT', substr($r['nazwa_przedmiotu'], 0, 36)), 1, 0, 'L');
+    $pdf->Cell(65, 7, iconv('UTF-8', 'ISO-8859-2//TRANSLIT', mb_substr($r['nazwa_przedmiotu'], 0, 36, 'UTF-8')), 1, 0, 'L');
     $pdf->Cell(25, 7, $r['data_zaliczenia'], 1, 0, 'C');
     $pdf->Cell(22, 7, $r['nr_albumu'], 1, 0, 'C');
     $pdf->Cell(18, 7, number_format($r['ocena'], 1), 1, 0, 'C');

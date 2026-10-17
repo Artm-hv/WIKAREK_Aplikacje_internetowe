@@ -42,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_login'])) {
     $res = $stmt->get_result();
     
     if ($row = $res->fetch_assoc()) {
-        if ($row['rola'] === 'admin' && (password_verify($haslo, $row['haslo']) || ($haslo === 'admin123' && $row['login'] === 'admin'))) {
+        if ($row['rola'] === 'admin' && password_verify($haslo, $row['haslo'])) {
+            session_regenerate_id(true);
             $_SESSION['admin_auth'] = $row['login'];
             $_SESSION['admin_time'] = time();
             header('Location: admin.php');
@@ -84,7 +85,7 @@ if (!isset($_SESSION['admin_auth'])):
         </div>
         <div class="form-group">
             <label>Hasło:</label>
-            <input type="password" name="haslo" class="form-control" value="admin123" required>
+            <input type="password" name="haslo" class="form-control" value="" required autocomplete="current-password">
         </div>
         <button type="submit" name="btn_login" class="btn" style="width:100%; padding:10px;">Zaloguj się</button>
     </form>
@@ -98,7 +99,7 @@ if (!isset($_SESSION['admin_auth'])):
 <?php
 exit;
 endif;
-?>
+
 
 $conn = get_db_connection();
 $msg_success = '';
@@ -119,13 +120,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_upload'])) {
             $msg_error = "Przesłany plik nie jest prawidłowym obrazem!";
         } else {
             $mime = $img_info['mime'];
-            $ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-            $allowed = ['image/jpeg', 'image/png', 'image/gif'];
+            $mime_map = [
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/gif' => 'gif'
+            ];
             
-            if (!in_array($mime, $allowed)) {
-                $msg_error = "Niedozwolony format pliku! Dozwolone są tylko pliki JPG, PNG, GIF.";
+            if (!isset($mime_map[$mime])) {
+                $msg_error = "Niedozwolony format pliku! Dozwolone są wyłącznie autentyczne pliki JPG, PNG, GIF.";
+            } elseif ($_FILES['zdjecie']['size'] > 5 * 1024 * 1024) {
+                $msg_error = "Rozmiar pliku nie może przekraczać 5 MB.";
             } else {
-                $unique_name = time() . '_' . rand(100, 999) . '.' . $ext;
+                $safe_ext = $mime_map[$mime];
+                $unique_name = 'foto_' . time() . '_' . bin2hex(random_bytes(4)) . '.' . $safe_ext;
                 $target_orig = UPLOAD_DIR_ORIG . '/' . $unique_name;
                 $target_thumb = UPLOAD_DIR_THUMB . '/' . $unique_name;
 

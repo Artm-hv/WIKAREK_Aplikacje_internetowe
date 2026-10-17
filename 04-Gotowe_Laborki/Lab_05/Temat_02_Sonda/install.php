@@ -6,20 +6,27 @@ $is_locked = file_exists($lock_file);
 $error = '';
 $success = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_install'])) {
-    if ($is_locked && !isset($_POST['force_reinstall'])) {
-        $error = "System jest już zainstalowany. Zaznacz 'Wymuś reinstalację', aby nadpisać tabele.";
-    } else {
-        $db_host = trim($_POST['db_host']);
-        $db_user = trim($_POST['db_user']);
-        $db_pass = $_POST['db_pass'];
-        $db_name = trim($_POST['db_name']);
-        $prefix = trim($_POST['tbl_prefix']);
-        $admin_user = trim($_POST['admin_user']);
-        $admin_pass = trim($_POST['admin_pass']);
-        $session_lifetime = (int)$_POST['session_lifetime'];
+if ($is_locked) {
+    $error = "System jest już zainstalowany. Plik blokady install.lock jest aktywny. Ze względów bezpieczeństwa ponowna instalacja jest zablokowana. Aby zainstalować ponownie, usuń fizycznie plik install.lock z serwera.";
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_install'])) {
+        $db_host = trim($_POST['db_host'] ?? 'localhost');
+        $db_user = trim($_POST['db_user'] ?? 'root');
+        $db_pass = $_POST['db_pass'] ?? '';
+        $db_name = trim($_POST['db_name'] ?? 'test');
+        $prefix = trim($_POST['tbl_prefix'] ?? 'T_3ID11B_01_');
+        $admin_user = trim($_POST['admin_user'] ?? 'admin');
+        $admin_pass = trim($_POST['admin_pass'] ?? 'admin123');
+        $session_lifetime = max(300, min(86400, (int)($_POST['session_lifetime'] ?? 1800)));
 
-        // Fallback dla hasła w MySQL
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $db_name) || !preg_match('/^[a-zA-Z0-9_]+$/', $prefix)) {
+            $error = "Niepoprawna nazwa bazy danych lub prefiks tabel (dozwolone wyłącznie litery, cyfry i znak _).";
+        } elseif (empty($admin_user) || !preg_match('/^[a-zA-Z0-9_]{3,32}$/', $admin_user)) {
+            $error = "Login administratora musi mieć od 3 do 32 znaków alfanumerycznych.";
+        } elseif (strlen($admin_pass) < 4) {
+            $error = "Hasło administratora musi zawierać co najmniej 4 znaki.";
+        }
+        
+        if (empty($error)) {
         $conn = @new mysqli($db_host, $db_user, $db_pass);
         if ($conn->connect_error) {
             $conn = @new mysqli($db_host, $db_user, '');
@@ -133,12 +140,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_install'])) {
         </div>
     <?php else: ?>
         <?php if ($is_locked): ?>
-            <div class="alert alert-warning">
-                <strong>Uwaga:</strong> Plik blokady <code>install.lock</code> istnieje. System jest już skonfigurowany.
-            </div>
-        <?php endif; ?>
+        <div class="alert alert-error">
+            <strong>System jest już zainstalowany!</strong><br>
+            Plik blokady <code>install.lock</code> istnieje na serwerze. Reinstalacja została zablokowana ze względów bezpieczeństwa.<br>
+            Aby zainstalować system ponownie, usuń plik <code>install.lock</code>.<br><br>
+            <a href="index.php" class="btn" style="background:#27ae60;">Przejdź do strony głównej</a>
+            <a href="admin.php" class="btn" style="margin-left:10px;">Przejdź do panelu admina</a>
+        </div>
+    <?php endif; ?>
 
-        <form method="post" class="card">
+        <?php if (!$is_locked): ?>
+    <form method="post" class="card">
             <h3 style="margin-bottom:15px; border-bottom:1px solid #ddd; padding-bottom:5px;">Parametry Bazy Danych MySQL</h3>
             <div class="form-group">
                 <label>Serwer bazy (Host):</label>
@@ -176,17 +188,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_install'])) {
             </div>
 
             <?php if ($is_locked): ?>
-            <div class="form-group" style="margin-top:15px;">
-                <label style="color:#c0392b;">
-                    <input type="checkbox" name="force_reinstall" value="1"> Wymuś reinstalację i nadpisanie konfiguracji
-                </label>
-            </div>
-            <?php endif; ?>
+        <div class="alert alert-error">
+            <strong>System jest już zainstalowany!</strong><br>
+            Plik blokady <code>install.lock</code> istnieje na serwerze. Reinstalacja została zablokowana ze względów bezpieczeństwa.<br>
+            Aby zainstalować system ponownie, usuń plik <code>install.lock</code>.<br><br>
+            <a href="index.php" class="btn" style="background:#27ae60;">Przejdź do strony głównej</a>
+            <a href="admin.php" class="btn" style="margin-left:10px;">Przejdź do panelu admina</a>
+        </div>
+    <?php endif; ?>
 
             <button type="submit" name="btn_install" class="btn" style="width:100%; padding:10px; font-size:16px;">
                 Zainstaluj i Wygeneruj konfig.php
             </button>
         </form>
+    <?php endif; ?>
     <?php endif; ?>
 </div>
 </body>

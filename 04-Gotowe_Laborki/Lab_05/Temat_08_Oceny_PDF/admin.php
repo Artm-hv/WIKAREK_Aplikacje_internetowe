@@ -42,7 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_login'])) {
     $res = $stmt->get_result();
     
     if ($row = $res->fetch_assoc()) {
-        if ($row['rola'] === 'admin' && (password_verify($haslo, $row['haslo']) || ($haslo === 'admin123' && $row['login'] === 'admin'))) {
+        if ($row['rola'] === 'admin' && password_verify($haslo, $row['haslo'])) {
+            session_regenerate_id(true);
             $_SESSION['admin_auth'] = $row['login'];
             $_SESSION['admin_time'] = time();
             header('Location: admin.php');
@@ -84,7 +85,7 @@ if (!isset($_SESSION['admin_auth'])):
         </div>
         <div class="form-group">
             <label>Hasło:</label>
-            <input type="password" name="haslo" class="form-control" value="admin123" required>
+            <input type="password" name="haslo" class="form-control" value="" required autocomplete="current-password">
         </div>
         <button type="submit" name="btn_login" class="btn" style="width:100%; padding:10px;">Zaloguj się</button>
     </form>
@@ -98,7 +99,7 @@ if (!isset($_SESSION['admin_auth'])):
 <?php
 exit;
 endif;
-?>
+
 
 $conn = get_db_connection();
 $msg_success = '';
@@ -124,23 +125,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_import'])) {
 
                 $conn->begin_transaction();
                 try {
-                    $stmt_ins = $conn->prepare("INSERT INTO " . TBL_PREFIX . "oceny (kod_przedmiotu, nazwa_przedmiotu, data_zaliczenia, nr_albumu, ocena, status) 
-                                                VALUES (?, ?, ?, ?, ?, 'nieprzejrzana')");
+                    $stmt_check = $conn->prepare("SELECT id FROM " . TBL_PREFIX . "oceny WHERE kod_przedmiotu = ? AND nr_albumu = ? AND data_zaliczenia = ?");
+                    $stmt_ins = $conn->prepare("INSERT INTO " . TBL_PREFIX . "oceny (kod_przedmiotu, nazwa_przedmiotu, data_zaliczenia, nr_albumu, ocena, status) VALUES (?, ?, ?, ?, ?, 'nieprzejrzana')");
+                    $stmt_upd = $conn->prepare("UPDATE " . TBL_PREFIX . "oceny SET ocena = ?, status = 'nieprzejrzana' WHERE id = ?");
 
+                    $allowed_grades = [2.0, 3.0, 3.5, 4.0, 4.5, 5.0];
                     $imported_count = 0;
+
                     for ($i = 1; $i < count($lines); $i++) {
                         $line = trim($lines[$i]);
                         if (empty($line)) continue;
                         $parts = explode(';', $line);
                         if (count($parts) >= 2) {
                             $album = trim($parts[0]);
-                            $grade = (float)trim($parts[1]);
-                            $stmt_ins->bind_param("ssssd", $kod, $nazwa, $data, $album, $grade);
-                            $stmt_ins->execute();
+                            $grade_str = str_replace(',', '.', trim($parts[1]));
+                            if (!is_numeric($grade_str)) continue;
+                            $grade = (float)$grade_str;
+                            if (!in_array($grade, $allowed_grades, true)) continue;
+
+                            // Sprawdzenie czy wpis juz istnieje (upsert)
+                            $stmt_check->bind_param("sss", $kod, $album, $data);
+                            $stmt_check->execute();
+                            $res_c = $stmt_check->get_result();
+                            if ($existing = $res_c->fetch_assoc()) {
+                                $stmt_upd->bind_param("di", $grade, $existing['id']);
+                                $stmt_upd->execute();
+                            } else {
+                                $stmt_ins->bind_param("ssssd", $kod, $nazwa, $data, $album, $grade);
+                                $stmt_ins->execute();
+                            }
                             $imported_count++;
                         }
                     }
+                    $stmt_check->close();
                     $stmt_ins->close();
+                    $stmt_upd->close();
                     $conn->commit();
                     $msg_success = "Pomyślnie zaimportowano $imported_count ocen dla przedmiotu '$nazwa' ($kod)!";
                 } catch (Exception $e) {

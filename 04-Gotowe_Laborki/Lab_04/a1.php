@@ -76,19 +76,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_confirm'])) {
         $k_str = implode(" ", $val['kursy']);
 
         // W pełni ATOMOWY licznik zgłoszeń: tryb c+ oraz LOCK_EX na cały cykl
-        $next_num = 1;
         $fp = fopen($counter_file, "c+");
-        if ($fp) {
-            flock($fp, LOCK_EX);
-            $raw_num = trim(stream_get_contents($fp));
-            $next_num = ($raw_num !== '') ? ((int)$raw_num + 1) : 1;
-            rewind($fp);
-            ftruncate($fp, 0);
-            fwrite($fp, (string)$next_num);
-            fflush($fp);
+        if (!$fp || !flock($fp, LOCK_EX)) {
+            die("Blad serwera: niemozliwe nalozenie blokady na plik licznika.");
+        }
+        $raw_num = trim(stream_get_contents($fp));
+        $next_num = ($raw_num !== '') ? ((int)$raw_num + 1) : 1;
+        rewind($fp);
+        ftruncate($fp, 0);
+        if (fwrite($fp, (string)$next_num) === false) {
             flock($fp, LOCK_UN);
             fclose($fp);
+            die("Blad serwera podczas zapisu nowej wartosci licznika.");
         }
+        fflush($fp);
+        flock($fp, LOCK_UN);
+        fclose($fp);
 
         $formatted_num = str_pad($next_num, 3, '0', STR_PAD_LEFT);
         $filename = "z_" . $formatted_num . ".txt";
@@ -120,18 +123,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_confirm'])) {
 $show_confirmation = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_submit'])) {
-    $nazwisko = isset($_POST['nazwisko']) ? trim($_POST['nazwisko']) : '';
-    $typ_zajec = isset($_POST['typ_zajec']) ? trim($_POST['typ_zajec']) : '';
-    $jezyk = isset($_POST['jezyk']) ? trim($_POST['jezyk']) : '';
-    $data_urodzenia = isset($_POST['data_urodzenia']) ? trim($_POST['data_urodzenia']) : '';
-    $pesel = isset($_POST['pesel']) ? trim($_POST['pesel']) : '';
+    // Usunięcie poprzedniego stanu pending przy nowej próbie wysłania
+    unset($_SESSION['validated_order']);
+
+    $nazwisko = (isset($_POST['nazwisko']) && is_string($_POST['nazwisko'])) ? trim($_POST['nazwisko']) : '';
+    $typ_zajec = (isset($_POST['typ_zajec']) && is_string($_POST['typ_zajec'])) ? trim($_POST['typ_zajec']) : '';
+    $jezyk = (isset($_POST['jezyk']) && is_string($_POST['jezyk'])) ? trim($_POST['jezyk']) : '';
+    $data_urodzenia = (isset($_POST['data_urodzenia']) && is_string($_POST['data_urodzenia'])) ? trim($_POST['data_urodzenia']) : '';
+    $pesel = (isset($_POST['pesel']) && is_string($_POST['pesel'])) ? trim($_POST['pesel']) : '';
     $kursy = (isset($_POST['kursy']) && is_array($_POST['kursy'])) ? $_POST['kursy'] : [];
 
-    // 1. Walidacja Nazwiska (tylko litery, max 24 znaki, nie puste, odrzucenie samych kresek i spacji)
+    // 1. Walidacja Nazwiska (łączna długość 2-24 znaki, tylko litery, dozwolone jedno lub dwuczłonowe)
+    $nazwisko_len = mb_strlen($nazwisko, 'UTF-8');
     if (empty($nazwisko)) {
         $errors['nazwisko'] = "* Pole nie może być puste;";
-    } elseif (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]{2,24}( [a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]{2,24})?$/u', $nazwisko)) {
-        $errors['nazwisko'] = "* Tylko litery do 24 znaków;";
+    } elseif ($nazwisko_len < 2 || $nazwisko_len > 24) {
+        $errors['nazwisko'] = "* Nazwisko musi zawierać od 2 do 24 znaków;";
+    } elseif (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+( [a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+)?$/u', $nazwisko)) {
+        $errors['nazwisko'] = "* Tylko litery (dozwolone nazwisko jedno- lub dwuczłonowe);";
     }
 
     // 2. Walidacja Typu zajęć (biała lista)

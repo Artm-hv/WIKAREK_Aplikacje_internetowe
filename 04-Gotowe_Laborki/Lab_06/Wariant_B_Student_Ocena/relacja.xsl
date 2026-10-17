@@ -55,7 +55,7 @@
     </table>
     
     <div style="margin-top:20px; font-size:13px; color:#555;">
-        <a href="index.php" style="color:#2980b9; font-weight:bold; text-decoration:none;">&larr; Przejdź do interaktywnego filtrowania SimpleXML (index.php)</a>
+        <a href="index.php" style="color:#2980b9; font-weight:bold; text-decoration:none;">&#8592; Przejdź do interaktywnego filtrowania SimpleXML (index.php)</a>
     </div>
 </div>
 </body>
