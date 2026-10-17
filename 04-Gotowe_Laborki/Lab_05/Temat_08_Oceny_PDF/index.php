@@ -14,6 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_search_album'])) 
     $_SESSION['current_student_album'] = $album;
 }
 
+$a_clean = ltrim(ltrim(strtolower($album), 's'), '0');
+$a_full = 's0' . $a_clean;
+$a_short = 's' . $a_clean;
+$a_num = $a_clean;
+
 // Bezpieczna zmiana statusu oceny (tylko dla ocen należących do bieżącego albumu!)
 if (isset($_GET['akcja']) && isset($_GET['id']) && !empty($album)) {
     $action = $_GET['akcja'];
@@ -21,8 +26,8 @@ if (isset($_GET['akcja']) && isset($_GET['id']) && !empty($album)) {
     
     if ($action === 'akceptuj' || $action === 'odrzuc') {
         $new_status = ($action === 'akceptuj') ? 'zaakceptowana' : 'odrzucona';
-        $stmt_upd = $conn->prepare("UPDATE " . TBL_PREFIX . "oceny SET status = ? WHERE id = ? AND nr_albumu = ?");
-        $stmt_upd->bind_param("sis", $new_status, $oid, $album);
+        $stmt_upd = $conn->prepare("UPDATE " . TBL_PREFIX . "oceny SET status = ? WHERE id = ? AND (nr_albumu IN (?, ?, ?, ?))");
+        $stmt_upd->bind_param("sissss", $new_status, $oid, $album, $a_full, $a_short, $a_num);
         $stmt_upd->execute();
         $stmt_upd->close();
         $msg_success = "Status oceny został zmieniony na: $new_status";
@@ -31,16 +36,16 @@ if (isset($_GET['akcja']) && isset($_GET['id']) && !empty($album)) {
 
 // Jeśli podano album -> oznacz nieprzejrzane oceny jako 'przejrzana' (wymóg śledzenia czy wyświetliła się ocena)
 if (!empty($album)) {
-    $stmt_view = $conn->prepare("UPDATE " . TBL_PREFIX . "oceny SET status = 'przejrzana' WHERE nr_albumu = ? AND status = 'nieprzejrzana'");
-    $stmt_view->bind_param("s", $album);
+    $stmt_view = $conn->prepare("UPDATE " . TBL_PREFIX . "oceny SET status = 'przejrzana' WHERE (nr_albumu IN (?, ?, ?, ?)) AND status = 'nieprzejrzana'");
+    $stmt_view->bind_param("ssss", $album, $a_full, $a_short, $a_num);
     $stmt_view->execute();
     $stmt_view->close();
 }
 
 $oceny = null;
 if (!empty($album)) {
-    $stmt = $conn->prepare("SELECT * FROM " . TBL_PREFIX . "oceny WHERE nr_albumu = ? ORDER BY nazwa_przedmiotu ASC, data_zaliczenia ASC");
-    $stmt->bind_param("s", $album);
+    $stmt = $conn->prepare("SELECT * FROM " . TBL_PREFIX . "oceny WHERE (nr_albumu IN (?, ?, ?, ?)) ORDER BY nazwa_przedmiotu ASC, data_zaliczenia ASC");
+    $stmt->bind_param("ssss", $album, $a_full, $a_short, $a_num);
     $stmt->execute();
     $oceny = $stmt->get_result();
 }
@@ -57,7 +62,7 @@ if (!empty($album)) {
     <header>
         <div>
             <h1>Portal Wyników i Ocen Studentów</h1>
-            <div class="team-info">Grupa: 3ID11B | Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)</div>
+            <div class="team-info">Grupa: 3ID11B | Artem Hizhovskyi (s097882), Ihor Namachynskyi (s097889)</div>
         </div>
         <div>
             <a href="admin.php" class="btn">Panel Prowadzącego</a>

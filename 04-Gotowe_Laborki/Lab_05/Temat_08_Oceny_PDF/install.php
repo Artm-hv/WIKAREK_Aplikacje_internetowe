@@ -69,10 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_install'])) {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
             $conn->query("INSERT IGNORE INTO `{$prefix}oceny` (`id`, `kod_przedmiotu`, `nazwa_przedmiotu`, `data_zaliczenia`, `nr_albumu`, `ocena`, `status`) VALUES
-            (1, 'PTI-01', 'Podstawy Technologii Internetowych', '2026-10-15', '97882', 5.0, 'nieprzejrzana'),
-            (2, 'BD-02', 'Bazy Danych i SQL O'Reilly', '2026-10-18', '97882', 4.5, 'nieprzejrzana'),
-            (3, 'PTI-01', 'Podstawy Technologii Internetowych', '2026-10-15', '97889', 5.0, 'nieprzejrzana'),
-            (4, 'SO-03', 'Systemy Operacyjne', '2026-10-20', '97889', 4.0, 'nieprzejrzana');");
+            (1, 'PTI-01', 'Podstawy Technologii Internetowych', '2026-10-15', 's097882', 5.0, 'nieprzejrzana'),
+            (2, 'BD-02', 'Bazy Danych i SQL O\'Reilly', '2026-10-18', 's097882', 4.5, 'nieprzejrzana'),
+            (3, 'PTI-01', 'Podstawy Technologii Internetowych', '2026-10-15', 's097889', 5.0, 'nieprzejrzana'),
+            (4, 'SO-03', 'Systemy Operacyjne', '2026-10-20', 's097889', 4.0, 'nieprzejrzana');");
 
             // 3. Generowanie konfig.php
             $config_content = "<?php\n" .

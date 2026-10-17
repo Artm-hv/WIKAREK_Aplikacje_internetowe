@@ -1,5 +1,5 @@
 PTI-01, Podstawy Technologii Internetowych O'Reilly, 2026-10-15
-97882; 5.0
-97889; 4.5
+s097882; 5.0
+s097889; 4.5
 95123; 3.5
 96221; 4.0

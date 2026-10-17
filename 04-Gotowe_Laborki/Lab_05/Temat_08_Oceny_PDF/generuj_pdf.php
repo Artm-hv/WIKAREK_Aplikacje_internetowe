@@ -10,7 +10,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 15);
         $this->Cell(0, 10, iconv('UTF-8', 'ISO-8859-2//TRANSLIT', 'Politechnika Swietokrzyska - Raport Ocen PTI/PAI'), 0, 1, 'C');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(0, 6, iconv('UTF-8', 'ISO-8859-2//TRANSLIT', 'Grupa: 3ID11B | Zespol: Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)'), 0, 1, 'C');
+        $this->Cell(0, 6, iconv('UTF-8', 'ISO-8859-2//TRANSLIT', 'Grupa: 3ID11B | Zespol: Artem Hizhovskyi (s097882), Ihor Namachynskyi (s097889)'), 0, 1, 'C');
         $this->Cell(0, 6, 'Data wygenerowania: ' . date('Y-m-d H:i:s'), 0, 1, 'C');
         $this->Ln(5);
         
