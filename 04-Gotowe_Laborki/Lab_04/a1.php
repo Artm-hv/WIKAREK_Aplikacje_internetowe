@@ -7,6 +7,9 @@
  */
 
 header('Content-Type: text/html; charset=utf-8');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Plik licznika zgłoszeń
 $counter_file = "licznik_zgloszen.dat";
@@ -58,28 +61,31 @@ if (isset($_GET['numer_zlecenia'])) {
 // ==============================================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_confirm'])) {
     if ($_POST['action_confirm'] === 'Zapisz') {
-        $n = trim($_POST['conf_nazwisko']);
-        $t = trim($_POST['conf_typ_zajec']);
-        $j = trim($_POST['conf_jezyk']);
-        $d = trim($_POST['conf_data_urodzenia']);
-        $p = trim($_POST['conf_pesel']);
-        $k_str = trim($_POST['conf_kursy']);
-
-        // Pobranie i inkrementacja numeru zgłoszenia z blokadą flock (wg sk_05.php)
-        $next_num = 1;
-        if (file_exists($counter_file)) {
-            $fp = fopen($counter_file, "r");
-            if ($fp) {
-                while (!flock($fp, LOCK_SH)) { usleep(100000); }
-                $next_num = (int)fgets($fp, 20) + 1;
-                flock($fp, LOCK_UN);
-                fclose($fp);
-            }
+        if (!isset($_SESSION['validated_order']) || empty($_SESSION['validated_order'])) {
+            header("Location: a1.php");
+            exit;
         }
-        $fp = fopen($counter_file, "w");
+        $val = $_SESSION['validated_order'];
+        unset($_SESSION['validated_order']);
+
+        $n = $val['nazwisko'];
+        $t = $val['typ_zajec'];
+        $j = $val['jezyk'];
+        $d = $val['data_urodzenia'];
+        $p = $val['pesel'];
+        $k_str = implode(" ", $val['kursy']);
+
+        // W pełni ATOMOWY licznik zgłoszeń: tryb c+ oraz LOCK_EX na cały cykl
+        $next_num = 1;
+        $fp = fopen($counter_file, "c+");
         if ($fp) {
-            while (!flock($fp, LOCK_EX)) { usleep(100000); }
-            fputs($fp, $next_num);
+            flock($fp, LOCK_EX);
+            $raw_num = trim(stream_get_contents($fp));
+            $next_num = ($raw_num !== '') ? ((int)$raw_num + 1) : 1;
+            rewind($fp);
+            ftruncate($fp, 0);
+            fwrite($fp, (string)$next_num);
+            fflush($fp);
             flock($fp, LOCK_UN);
             fclose($fp);
         }
@@ -95,12 +101,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_confirm'])) {
         $file_content .= "Pesel = " . $p . "\r\n";
         $file_content .= "Kursy = " . $k_str . "\r\n";
 
-        file_put_contents($filename, $file_content);
+        if (file_put_contents($filename, $file_content) === false) {
+            die("Blad zapisu zgloszenia do pliku.");
+        }
 
         header("Location: a1.php?numer_zlecenia=" . $formatted_num);
         exit;
     } else {
-        // Anuluj
+        unset($_SESSION['validated_order']);
         header("Location: a1.php?numer_zlecenia=0");
         exit;
     }
@@ -117,37 +125,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_submit'])) {
     $jezyk = isset($_POST['jezyk']) ? trim($_POST['jezyk']) : '';
     $data_urodzenia = isset($_POST['data_urodzenia']) ? trim($_POST['data_urodzenia']) : '';
     $pesel = isset($_POST['pesel']) ? trim($_POST['pesel']) : '';
-    $kursy = isset($_POST['kursy']) ? $_POST['kursy'] : [];
+    $kursy = (isset($_POST['kursy']) && is_array($_POST['kursy'])) ? $_POST['kursy'] : [];
 
-    // 1. Walidacja Nazwiska (tylko litery, max 24 znaki, nie puste)
+    // 1. Walidacja Nazwiska (tylko litery, max 24 znaki, nie puste, odrzucenie samych kresek i spacji)
     if (empty($nazwisko)) {
         $errors['nazwisko'] = "* Pole nie może być puste;";
-    } elseif (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s\-]{1,24}$/u', $nazwisko)) {
+    } elseif (!preg_match('/^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]{2,24}( [a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]{2,24})?$/u', $nazwisko)) {
         $errors['nazwisko'] = "* Tylko litery do 24 znaków;";
     }
 
-    // 2. Walidacja Typu zajęć
-    if (empty($typ_zajec)) {
+    // 2. Walidacja Typu zajęć (biała lista)
+    $allowed_typ = ['stacjonarnie', 'zdalnie'];
+    if (empty($typ_zajec) || !in_array($typ_zajec, $allowed_typ, true)) {
         $errors['typ_zajec'] = "*Wybierz opcje";
     }
 
-    // 3. Walidacja Języka
-    if (empty($jezyk)) {
+    // 3. Walidacja Języka (biała lista)
+    $allowed_jezyk = ['Polski', 'Angielski'];
+    if (empty($jezyk) || !in_array($jezyk, $allowed_jezyk, true)) {
         $errors['jezyk'] = "*Wybierz opcje";
     }
 
-    // 4. Walidacja Daty urodzenia (wiek min. 16 lat wg DateTime z sk_8.php)
+    // 4. Walidacja Daty urodzenia (rygorystyczna kontrola kalendarza checkdate + wiek min. 16 lat)
     if (empty($data_urodzenia)) {
         $errors['data_urodzenia'] = "* Pole nie może być puste;";
     } else {
-        try {
+        $d_parts = explode('-', $data_urodzenia);
+        if (count($d_parts) !== 3 || !ctype_digit($d_parts[0]) || !ctype_digit($d_parts[1]) || !ctype_digit($d_parts[2]) || !checkdate((int)$d_parts[1], (int)$d_parts[2], (int)$d_parts[0])) {
+            $errors['data_urodzenia'] = "* Niepoprawna data kalendarzowa;";
+        } else {
             $birth = new DateTime($data_urodzenia);
             $limit16 = new DateTime('-16 years');
             if ($birth > $limit16) {
                 $errors['data_urodzenia'] = "*Musisz mieć więcej niż 16 lat";
             }
-        } catch (Exception $e) {
-            $errors['data_urodzenia'] = "* Niepoprawny format daty;";
         }
     }
 
@@ -178,14 +189,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_submit'])) {
             } elseif ($p_mies >= 21 && $p_mies <= 32) {
                 $full_year = 2000 + $p_rok;
                 $real_month = $p_mies - 20;
+            } elseif ($p_mies >= 81 && $p_mies <= 92) {
+                $full_year = 1800 + $p_rok;
+                $real_month = $p_mies - 80;
+            } elseif ($p_mies >= 41 && $p_mies <= 52) {
+                $full_year = 2100 + $p_rok;
+                $real_month = $p_mies - 40;
+            } elseif ($p_mies >= 61 && $p_mies <= 72) {
+                $full_year = 2200 + $p_rok;
+                $real_month = $p_mies - 60;
             } else {
                 $pesel_errs[] = "* Błędny miesiąc w PESEL";
             }
 
             if ($full_year > 0) {
-                $pesel_date = sprintf("%04d-%02d-%02d", $full_year, $real_month, $p_dzien);
-                if ($pesel_date !== $data_urodzenia) {
-                    $pesel_errs[] = "* Niezgodnosc dat";
+                if (!checkdate($real_month, $p_dzien, $full_year)) {
+                    $pesel_errs[] = "* Niepoprawna data w PESEL";
+                } else {
+                    $pesel_date = sprintf("%04d-%02d-%02d", $full_year, $real_month, $p_dzien);
+                    if ($pesel_date !== $data_urodzenia) {
+                        $pesel_errs[] = "* Niezgodnosc dat";
+                    }
                 }
             }
         }
@@ -194,13 +218,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btn_submit'])) {
         $errors['pesel'] = implode(" ", $pesel_errs);
     }
 
-    // 6. Walidacja Kursów (co najmniej jeden)
+    // 6. Walidacja Kursów (co najmniej jeden, biała lista)
+    $allowed_kursy = ['Programowanie', 'Muzyka', 'Taniec', 'Gimnastyka'];
+    $kursy = array_values(array_intersect($kursy, $allowed_kursy));
     if (empty($kursy)) {
         $errors['kursy'] = "* Trzeba wybrać choć jeden";
     }
 
-    // Jeśli brak błędów -> przejście do potwierdzenia
+    // Jeśli brak błędów -> zapisanie zweryfikowanych danych w sesji i przejście do potwierdzenia
     if (empty($errors)) {
+        $_SESSION['validated_order'] = [
+            'nazwisko' => $nazwisko,
+            'typ_zajec' => $typ_zajec,
+            'jezyk' => $jezyk,
+            'data_urodzenia' => $data_urodzenia,
+            'pesel' => $pesel,
+            'kursy' => $kursy
+        ];
         $show_confirmation = true;
     }
 }

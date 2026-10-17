@@ -9,11 +9,11 @@
 <!ELEMENT nazwisko (#PCDATA)>
 <!ELEMENT telefon (#PCDATA)>
 <!ELEMENT spektakle (spektakl+)>
-<!ELEMENT spektakl (tytul, rezyser, scena)>
+<!ELEMENT spektakl (tytul, rezyser, cena)>
 <!ATTLIST spektakl id ID #REQUIRED>
 <!ELEMENT tytul (#PCDATA)>
 <!ELEMENT rezyser (#PCDATA)>
-<!ELEMENT scena (#PCDATA)>
+<!ELEMENT cena (#PCDATA)>
 <!ELEMENT rezerwacje (rezerwacja+)>
 <!ELEMENT rezerwacja (data, miejsce)>
 <!ATTLIST rezerwacja id ID #REQUIRED>
@@ -23,42 +23,56 @@
 <!ELEMENT miejsce (#PCDATA)>
 ]>
 <baza>
- <widzowie>
-  <widz id="E1_1">
-   <imie>Piotr</imie>
-   <nazwisko>Wisniewski</nazwisko>
-   <telefon>600100200</telefon>
-  </widz>
-  <widz id="E1_2">
-   <imie>Piotr</imie>
-   <nazwisko>Nowak</nazwisko>
-   <telefon>600100200_2</telefon>
-  </widz>
- </widzowie>
- <spektakle>
-  <spektakl id="E2_1">
-   <tytul>Hamlet</tytul>
-   <rezyser>J. Kowal</rezyser>
-   <scena>Duza</scena>
-  </spektakl>
-  <spektakl id="E2_2">
-   <tytul>Hamlet (Wariant B)</tytul>
-   <rezyser>J. Kowal (Wariant B)</rezyser>
-   <scena>Duza (Wariant B)</scena>
-  </spektakl>
- </spektakle>
- <rezerwacje>
-  <rezerwacja id="R1" ref1="E1_1" ref2="E2_1">
-   <data>2026-11-05</data>
-   <miejsce>Rzad 4 Miejsce 12</miejsce>
-  </rezerwacja>
-  <rezerwacja id="R2" ref1="E1_1" ref2="E2_2">
-   <data>2026-11-05</data>
-   <miejsce>Rzad 4 Miejsce 12</miejsce>
-  </rezerwacja>
-  <rezerwacja id="R3" ref1="E1_2" ref2="E2_1">
-   <data>2026-11-05</data>
-   <miejsce>Rzad 4 Miejsce 12</miejsce>
-  </rezerwacja>
- </rezerwacje>
+  <widzowie>
+    <widz id="E1_1">
+      <imie>Adam</imie>
+      <nazwisko>Mickiewicz</nazwisko>
+      <telefon>501111222</telefon>
+    </widz>
+    <widz id="E1_2">
+      <imie>Juliusz</imie>
+      <nazwisko>Słowacki</nazwisko>
+      <telefon>502333444</telefon>
+    </widz>
+    <widz id="E1_3">
+      <imie>Olga</imie>
+      <nazwisko>Tokarczuk</nazwisko>
+      <telefon>503555666</telefon>
+    </widz>
+  </widzowie>
+  <spektakle>
+    <spektakl id="E2_1">
+      <tytul>Dziady część III</tytul>
+      <rezyser>Konrad Swinarski</rezyser>
+      <cena>80</cena>
+    </spektakl>
+    <spektakl id="E2_2">
+      <tytul>Kordian</tytul>
+      <rezyser>Jan Englert</rezyser>
+      <cena>75</cena>
+    </spektakl>
+    <spektakl id="E2_3">
+      <tytul>Wesele</tytul>
+      <rezyser>Andrzej Wajda</rezyser>
+      <cena>90</cena>
+    </spektakl>
+  </spektakle>
+  <rezerwacje>
+    <rezerwacja id="R1" ref1="E1_1" ref2="E2_1">
+      <data>2026-10-24</data>
+      <miejsce>Rząd 3, Miejsce 12</miejsce>
+    </rezerwacja>
+    <rezerwacja id="R2" ref1="E1_1" ref2="E2_2">
+      <data>2026-10-28</data>
+      <miejsce>Rząd 5, Miejsce 4</miejsce>
+    </rezerwacja>
+    <rezerwacja id="R3" ref1="E1_2" ref2="E2_1">
+      <data>2026-10-24</data>
+      <miejsce>Rząd 3, Miejsce 14</miejsce>
+    </rezerwacja>
+    <rezerwacja id="R4" ref1="E1_3" ref2="E2_3">
+      <data>2026-10-30</data>
+      <miejsce>Rząd 1, Miejsce 8</miejsce>
+    </rezerwacja>
+  </rezerwacje>
 </baza>

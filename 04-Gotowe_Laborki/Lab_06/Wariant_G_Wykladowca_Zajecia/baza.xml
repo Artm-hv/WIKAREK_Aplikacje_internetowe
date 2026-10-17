@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
+<!DOCTYPE baza [
+<!ELEMENT baza (wykladowcy, zajecia_lista, harmonogram)>
+<!ELEMENT wykladowcy (wykladowca+)>
+<!ELEMENT wykladowca (tytul, nazwisko, katedra)>
+<!ATTLIST wykladowca id ID #REQUIRED>
+<!ELEMENT tytul (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT katedra (#PCDATA)>
+<!ELEMENT zajecia_lista (zajecia+)>
+<!ELEMENT zajecia (przedmiot, forma, godziny)>
+<!ATTLIST zajecia id ID #REQUIRED>
+<!ELEMENT przedmiot (#PCDATA)>
+<!ELEMENT forma (#PCDATA)>
+<!ELEMENT godziny (#PCDATA)>
+<!ELEMENT harmonogram (przydzial+)>
+<!ELEMENT przydzial (dzien, sala)>
+<!ATTLIST przydzial id ID #REQUIRED>
+<!ATTLIST przydzial ref1 IDREF #REQUIRED>
+<!ATTLIST przydzial ref2 IDREF #REQUIRED>
+<!ELEMENT dzien (#PCDATA)>
+<!ELEMENT sala (#PCDATA)>
+]>
+<baza>
+  <wykladowcy>
+    <wykladowca id="E1_1">
+      <tytul>dr inż.</tytul>
+      <nazwisko>Jarosław Wikarek</nazwisko>
+      <katedra>Informatyki Stosowanej</katedra>
+    </wykladowca>
+    <wykladowca id="E1_2">
+      <tytul>prof. dr hab.</tytul>
+      <nazwisko>Andrzej Nowak</nazwisko>
+      <katedra>Systemów Komputerowych</katedra>
+    </wykladowca>
+    <wykladowca id="E1_3">
+      <tytul>dr hab. inż.</tytul>
+      <nazwisko>Piotr Kowal</nazwisko>
+      <katedra>Inżynierii Oprogramowania</katedra>
+    </wykladowca>
+  </wykladowcy>
+  <zajecia_lista>
+    <zajecia id="E2_1">
+      <przedmiot>Podstawy Technologii Internetowych</przedmiot>
+      <forma>Laboratorium</forma>
+      <godziny>30</godziny>
+    </zajecia>
+    <zajecia id="E2_2">
+      <przedmiot>Projektowanie Aplikacji Internetowych</przedmiot>
+      <forma>Wykład</forma>
+      <godziny>30</godziny>
+    </zajecia>
+    <zajecia id="E2_3">
+      <przedmiot>Zaawansowane Bazy Danych</przedmiot>
+      <forma>Projekt</forma>
+      <godziny>15</godziny>
+    </zajecia>
+  </zajecia_lista>
+  <harmonogram>
+    <przydzial id="R1" ref1="E1_1" ref2="E2_1">
+      <dzien>Wtorek 08:30</dzien>
+      <sala>Lab 114 C-MFiT</sala>
+    </przydzial>
+    <przydzial id="R2" ref1="E1_1" ref2="E2_2">
+      <dzien>Środa 10:15</dzien>
+      <sala>Aula 3A</sala>
+    </przydzial>
+    <przydzial id="R3" ref1="E1_2" ref2="E2_3">
+      <dzien>Czwartek 12:00</dzien>
+      <sala>Lab 205</sala>
+    </przydzial>
+    <przydzial id="R4" ref1="E1_3" ref2="E2_1">
+      <dzien>Piątek 14:00</dzien>
+      <sala>Lab 114 C-MFiT</sala>
+    </przydzial>
+  </harmonogram>
+</baza>

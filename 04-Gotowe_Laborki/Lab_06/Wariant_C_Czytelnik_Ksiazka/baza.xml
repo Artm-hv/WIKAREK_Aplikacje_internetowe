@@ -3,11 +3,11 @@
 <!DOCTYPE baza [
 <!ELEMENT baza (czytelnicy, ksiazki, wypozyczenia)>
 <!ELEMENT czytelnicy (czytelnik+)>
-<!ELEMENT czytelnik (imie, nazwisko, karta)>
+<!ELEMENT czytelnik (nr_karty, imie, nazwisko)>
 <!ATTLIST czytelnik id ID #REQUIRED>
+<!ELEMENT nr_karty (#PCDATA)>
 <!ELEMENT imie (#PCDATA)>
 <!ELEMENT nazwisko (#PCDATA)>
-<!ELEMENT karta (#PCDATA)>
 <!ELEMENT ksiazki (ksiazka+)>
 <!ELEMENT ksiazka (tytul, autor, rok)>
 <!ATTLIST ksiazka id ID #REQUIRED>
@@ -15,50 +15,64 @@
 <!ELEMENT autor (#PCDATA)>
 <!ELEMENT rok (#PCDATA)>
 <!ELEMENT wypozyczenia (wypozyczenie+)>
-<!ELEMENT wypozyczenie (data_wyp, dni)>
+<!ELEMENT wypozyczenie (data_wyp, termin_zwrotu)>
 <!ATTLIST wypozyczenie id ID #REQUIRED>
 <!ATTLIST wypozyczenie ref1 IDREF #REQUIRED>
 <!ATTLIST wypozyczenie ref2 IDREF #REQUIRED>
 <!ELEMENT data_wyp (#PCDATA)>
-<!ELEMENT dni (#PCDATA)>
+<!ELEMENT termin_zwrotu (#PCDATA)>
 ]>
 <baza>
- <czytelnicy>
-  <czytelnik id="E1_1">
-   <imie>Ihor</imie>
-   <nazwisko>Namachynskyi</nazwisko>
-   <karta>K-1042</karta>
-  </czytelnik>
-  <czytelnik id="E1_2">
-   <imie>Piotr</imie>
-   <nazwisko>Nowak</nazwisko>
-   <karta>K-1042_2</karta>
-  </czytelnik>
- </czytelnicy>
- <ksiazki>
-  <ksiazka id="E2_1">
-   <tytul>Czysty Kod</tytul>
-   <autor>Robert Martin</autor>
-   <rok>2008</rok>
-  </ksiazka>
-  <ksiazka id="E2_2">
-   <tytul>Czysty Kod (Wariant B)</tytul>
-   <autor>Robert Martin (Wariant B)</autor>
-   <rok>2008 (Wariant B)</rok>
-  </ksiazka>
- </ksiazki>
- <wypozyczenia>
-  <wypozyczenie id="R1" ref1="E1_1" ref2="E2_1">
-   <data_wyp>2026-10-01</data_wyp>
-   <dni>30</dni>
-  </wypozyczenie>
-  <wypozyczenie id="R2" ref1="E1_1" ref2="E2_2">
-   <data_wyp>2026-10-01</data_wyp>
-   <dni>30</dni>
-  </wypozyczenie>
-  <wypozyczenie id="R3" ref1="E1_2" ref2="E2_1">
-   <data_wyp>2026-10-01</data_wyp>
-   <dni>30</dni>
-  </wypozyczenie>
- </wypozyczenia>
+  <czytelnicy>
+    <czytelnik id="E1_1">
+      <nr_karty>K-1001</nr_karty>
+      <imie>Jan</imie>
+      <nazwisko>Kowalski</nazwisko>
+    </czytelnik>
+    <czytelnik id="E1_2">
+      <nr_karty>K-1002</nr_karty>
+      <imie>Katarzyna</imie>
+      <nazwisko>Dąbrowska</nazwisko>
+    </czytelnik>
+    <czytelnik id="E1_3">
+      <nr_karty>K-1003</nr_karty>
+      <imie>Tomasz</imie>
+      <nazwisko>Lewandowski</nazwisko>
+    </czytelnik>
+  </czytelnicy>
+  <ksiazki>
+    <ksiazka id="E2_1">
+      <tytul>Czysty Kod</tytul>
+      <autor>Robert C. Martin</autor>
+      <rok>2014</rok>
+    </ksiazka>
+    <ksiazka id="E2_2">
+      <tytul>Wzorce Projektowe</tytul>
+      <autor>Gang of Four</autor>
+      <rok>2010</rok>
+    </ksiazka>
+    <ksiazka id="E2_3">
+      <tytul>Algorytmy i Struktury Danych</tytul>
+      <autor>Thomas Cormen</autor>
+      <rok>2018</rok>
+    </ksiazka>
+  </ksiazki>
+  <wypozyczenia>
+    <wypozyczenie id="R1" ref1="E1_1" ref2="E2_1">
+      <data_wyp>2026-10-01</data_wyp>
+      <termin_zwrotu>2026-10-31</termin_zwrotu>
+    </wypozyczenie>
+    <wypozyczenie id="R2" ref1="E1_1" ref2="E2_2">
+      <data_wyp>2026-10-05</data_wyp>
+      <termin_zwrotu>2026-11-05</termin_zwrotu>
+    </wypozyczenie>
+    <wypozyczenie id="R3" ref1="E1_2" ref2="E2_3">
+      <data_wyp>2026-10-10</data_wyp>
+      <termin_zwrotu>2026-11-10</termin_zwrotu>
+    </wypozyczenie>
+    <wypozyczenie id="R4" ref1="E1_3" ref2="E2_1">
+      <data_wyp>2026-10-12</data_wyp>
+      <termin_zwrotu>2026-11-12</termin_zwrotu>
+    </wypozyczenie>
+  </wypozyczenia>
 </baza>

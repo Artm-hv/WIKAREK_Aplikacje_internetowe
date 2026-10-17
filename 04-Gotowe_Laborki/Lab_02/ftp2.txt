@@ -1,0 +1,36 @@
+Polaczenie z 10.0.0.41.
+220 Microsoft FTP Service
+Uzytkownik (10.0.0.41:(none)): student1
+331 Password required for student1.
+Haslo: 
+230 User logged in.
+ftp> binary
+200 Type set to I.
+ftp> mkdir spr
+257 "spr" directory created.
+ftp> cd spr
+250 CWD command successful.
+ftp> put http.txt
+200 PORT command successful.
+150 Opening BINARY mode data connection for http.txt.
+226 Transfer complete.
+ftp: 4324 bajtow wyslanych w 0.01s (432.40kB/s)
+ftp> put poczta.txt
+200 PORT command successful.
+150 Opening BINARY mode data connection for poczta.txt.
+226 Transfer complete.
+ftp: 3820 bajtow wyslanych w 0.01s (382.00kB/s)
+ftp> put ftp1.txt
+200 PORT command successful.
+150 Opening BINARY mode data connection for ftp1.txt.
+226 Transfer complete.
+ftp: 2940 bajtow wyslanych w 0.01s (294.00kB/s)
+ftp> ls
+200 PORT command successful.
+150 Opening ASCII mode data connection for file list.
+http.txt
+poczta.txt
+ftp1.txt
+226 Transfer complete.
+ftp> bye
+221 Goodbye.

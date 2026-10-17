@@ -3,62 +3,76 @@
 <!DOCTYPE baza [
 <!ELEMENT baza (pacjenci, lekarze, badania)>
 <!ELEMENT pacjenci (pacjent+)>
-<!ELEMENT pacjent (imie, nazwisko, pesel)>
+<!ELEMENT pacjent (pesel, imie, nazwisko)>
 <!ATTLIST pacjent id ID #REQUIRED>
+<!ELEMENT pesel (#PCDATA)>
 <!ELEMENT imie (#PCDATA)>
 <!ELEMENT nazwisko (#PCDATA)>
-<!ELEMENT pesel (#PCDATA)>
 <!ELEMENT lekarze (lekarz+)>
-<!ELEMENT lekarz (imie_l, specjalizacja, gabinet)>
+<!ELEMENT lekarz (imie_nazwisko, specjalizacja, gabinet)>
 <!ATTLIST lekarz id ID #REQUIRED>
-<!ELEMENT imie_l (#PCDATA)>
+<!ELEMENT imie_nazwisko (#PCDATA)>
 <!ELEMENT specjalizacja (#PCDATA)>
 <!ELEMENT gabinet (#PCDATA)>
 <!ELEMENT badania (badanie+)>
-<!ELEMENT badanie (data, wynik)>
+<!ELEMENT badanie (data, opis)>
 <!ATTLIST badanie id ID #REQUIRED>
 <!ATTLIST badanie ref1 IDREF #REQUIRED>
 <!ATTLIST badanie ref2 IDREF #REQUIRED>
 <!ELEMENT data (#PCDATA)>
-<!ELEMENT wynik (#PCDATA)>
+<!ELEMENT opis (#PCDATA)>
 ]>
 <baza>
- <pacjenci>
-  <pacjent id="E1_1">
-   <imie>Marek</imie>
-   <nazwisko>Zieliński</nazwisko>
-   <pesel>99010112345</pesel>
-  </pacjent>
-  <pacjent id="E1_2">
-   <imie>Piotr</imie>
-   <nazwisko>Nowak</nazwisko>
-   <pesel>99010112345_2</pesel>
-  </pacjent>
- </pacjenci>
- <lekarze>
-  <lekarz id="E2_1">
-   <imie_l>Adam</imie_l>
-   <specjalizacja>Kardiolog</specjalizacja>
-   <gabinet>204</gabinet>
-  </lekarz>
-  <lekarz id="E2_2">
-   <imie_l>Adam (Wariant B)</imie_l>
-   <specjalizacja>Kardiolog (Wariant B)</specjalizacja>
-   <gabinet>204 (Wariant B)</gabinet>
-  </lekarz>
- </lekarze>
- <badania>
-  <badanie id="R1" ref1="E1_1" ref2="E2_1">
-   <data>2026-10-16</data>
-   <wynik>W normie</wynik>
-  </badanie>
-  <badanie id="R2" ref1="E1_1" ref2="E2_2">
-   <data>2026-10-16</data>
-   <wynik>W normie</wynik>
-  </badanie>
-  <badanie id="R3" ref1="E1_2" ref2="E2_1">
-   <data>2026-10-16</data>
-   <wynik>W normie</wynik>
-  </badanie>
- </badania>
+  <pacjenci>
+    <pacjent id="E1_1">
+      <pesel>95011508214</pesel>
+      <imie>Marek</imie>
+      <nazwisko>Kozłowski</nazwisko>
+    </pacjent>
+    <pacjent id="E1_2">
+      <pesel>98052003456</pesel>
+      <imie>Ewa</imie>
+      <nazwisko>Majewska</nazwisko>
+    </pacjent>
+    <pacjent id="E1_3">
+      <pesel>01231009876</pesel>
+      <imie>Karol</imie>
+      <nazwisko>Wójcik</nazwisko>
+    </pacjent>
+  </pacjenci>
+  <lekarze>
+    <lekarz id="E2_1">
+      <imie_nazwisko>dr n. med. Janusz Pawlak</imie_nazwisko>
+      <specjalizacja>Kardiologia</specjalizacja>
+      <gabinet>104</gabinet>
+    </lekarz>
+    <lekarz id="E2_2">
+      <imie_nazwisko>dr Anna Kruk</imie_nazwisko>
+      <specjalizacja>Neurologia</specjalizacja>
+      <gabinet>208</gabinet>
+    </lekarz>
+    <lekarz id="E2_3">
+      <imie_nazwisko>lek. Tomasz Lis</imie_nazwisko>
+      <specjalizacja>Okulistyka</specjalizacja>
+      <gabinet>112</gabinet>
+    </lekarz>
+  </lekarze>
+  <badania>
+    <badanie id="R1" ref1="E1_1" ref2="E2_1">
+      <data>2026-10-18</data>
+      <opis>Badanie EKG spoczynkowe</opis>
+    </badanie>
+    <badanie id="R2" ref1="E1_1" ref2="E2_3">
+      <data>2026-10-22</data>
+      <opis>Badanie dna oka</opis>
+    </badanie>
+    <badanie id="R3" ref1="E1_2" ref2="E2_2">
+      <data>2026-10-19</data>
+      <opis>Konsultacja neurologiczna</opis>
+    </badanie>
+    <badanie id="R4" ref1="E1_3" ref2="E2_1">
+      <data>2026-10-20</data>
+      <opis>Echo serca</opis>
+    </badanie>
+  </badania>
 </baza>

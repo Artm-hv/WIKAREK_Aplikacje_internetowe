@@ -1,41 +1,75 @@
 <?php
-include "konfig.php";
-$menu_items = $conn ? $conn->query("SELECT * FROM menu ORDER BY kolejnosc ASC") : null;
+require_once __DIR__ . '/konfig.php';
+$conn = get_db_connection();
+
+$menu_items = $conn->query("SELECT * FROM " . TBL_PREFIX . "menu ORDER BY kolejnosc ASC, id ASC");
+
+// Wybrana pozycja
 $selected_id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
-$active_content = null;
-if ($conn) {
-    $res = $conn->query("SELECT * FROM menu WHERE id = $selected_id");
-    if ($res && $res->num_rows > 0) $active_content = $res->fetch_assoc();
+$stmt = $conn->prepare("SELECT * FROM " . TBL_PREFIX . "menu WHERE id = ?");
+$stmt->bind_param("i", $selected_id);
+$stmt->execute();
+$current = $stmt->get_result()->fetch_assoc();
+if (!$current) {
+    $current = ['nazwa' => 'Nie znaleziono', 'typ' => 'html', 'zawartosc' => '<p>Wybrana pozycja menu nie istnieje.</p>'];
 }
 ?>
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Mini Portal</title><link rel="stylesheet" href="style.css">
-<style>
-.portal-layout { display: flex; gap: 20px; min-height: 400px; }
-.portal-menu { width: 200px; border-right: 2px solid #eee; padding-right: 15px; }
-.portal-menu ul { list-style: none; }
-.portal-menu li { margin-bottom: 10px; }
-.portal-menu a { display: block; padding: 8px 12px; background: #eef2f7; text-decoration: none; border-radius: 4px; color: #333; }
-.portal-menu a.active, .portal-menu a:hover { background: #3498db; color: white; }
-.portal-body { flex: 1; padding: 10px; }
-</style></head>
-<body><div class="container"><header><h1>Mini Portal - Politechnika Świętokrzyska</h1><nav><a href="admin.php">Zarządzaj Menu</a><a href="install.php">Instalator</a></nav></header>
-<div class="portal-layout">
-<div class="portal-menu"><ul>
-<?php if ($menu_items) while($m = $menu_items->fetch_assoc()): ?>
-    <li><a href="index.php?id=<?php echo $m['id']; ?>" class="<?php echo ($m['id'] == $selected_id)?'active':''; ?>"><?php echo htmlspecialchars($m['nazwa']); ?></a></li>
-<?php endwhile; ?>
-</ul></div>
-<div class="portal-body">
-<?php
-if ($active_content) {
-    if ($active_content['typ'] === 'html') {
-        echo $active_content['zawartosc'];
-    } elseif ($active_content['typ'] === 'link_zew') {
-        echo "<p>Link do serwisu zewnętrznego: <a href='" . htmlspecialchars($active_content['zawartosc']) . "' target='_blank'>" . htmlspecialchars($active_content['zawartosc']) . "</a></p>";
-        echo "<iframe src='" . htmlspecialchars($active_content['zawartosc']) . "' style='width:100%; height:350px; border:1px solid #ccc;'></iframe>";
-    } elseif ($active_content['typ'] === 'link_wew') {
-        echo "<p>Link wewnętrzny: <strong>" . htmlspecialchars($active_content['zawartosc']) . "</strong></p>";
-    }
-} else { echo "<p>Wybierz pozycję z menu.</p>"; }
-?>
-</div></div></div></body></html>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Mini Portal - <?php echo htmlspecialchars($current['nazwa']); ?></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container" style="max-width:1050px;">
+    <header>
+        <div>
+            <h1>Mini Portal Internetowy (MySQL)</h1>
+            <div class="team-info">Grupa: 3ID11B | Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)</div>
+        </div>
+        <div>
+            <a href="admin.php" class="btn">Zarządzaj Menu</a>
+        </div>
+    </header>
+
+    <div class="portal-layout">
+        <aside class="portal-menu">
+            <h3>Nawigacja Portalu</h3>
+            <ul>
+                <?php while($item = $menu_items->fetch_assoc()): ?>
+                    <li>
+                        <a href="index.php?id=<?php echo $item['id']; ?>" class="<?php echo ($item['id'] == $selected_id) ? 'active' : ''; ?>">
+                            <?php echo htmlspecialchars($item['nazwa']); ?>
+                        </a>
+                    </li>
+                <?php endwhile; ?>
+            </ul>
+        </aside>
+
+        <main class="portal-content">
+            <?php if ($current['typ'] === 'html'): ?>
+                <div class="html-render">
+                    <?php echo $current['zawartosc']; ?>
+                </div>
+            <?php elseif ($current['typ'] === 'link_wew'): ?>
+                <div class="wew-render">
+                    <?php 
+                        $safe_path = __DIR__ . '/' . $current['zawartosc'];
+                        if (file_exists($safe_path)) {
+                            include $safe_path;
+                        } else {
+                            echo "<div class='alert alert-warning'>Nie znaleziono lokalnego pliku: " . htmlspecialchars($current['zawartosc']) . "</div>";
+                        }
+                    ?>
+                </div>
+            <?php elseif ($current['typ'] === 'link_zew'): ?>
+                <div class="zew-render" style="height:100%;">
+                    <iframe src="<?php echo htmlspecialchars($current['zawartosc']); ?>" style="width:100%; height:480px; border:1px solid #ccc; border-radius:4px;"></iframe>
+                </div>
+            <?php endif; ?>
+        </main>
+    </div>
+</div>
+</body>
+</html>

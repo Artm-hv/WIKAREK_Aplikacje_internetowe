@@ -9,4 +9,7 @@ $RECYCLE.BIN/
 .idea/
 .vscode/
 *.swp
-*~
+# Python cache
+__pycache__/
+*.pyc
+

@@ -1,18 +1,25 @@
 <?php
-session_start();
-$code = (string)rand(1000, 9999);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$n1 = rand(2, 9);
+$n2 = rand(1, 9);
+$code = (string)($n1 + $n2);
 $_SESSION['captcha_code'] = $code;
 
-header("Content-Type: image/png");
-$im = imagecreate(100, 36);
-$bg = imagecolorallocate($im, 240, 240, 240);
-$fg = imagecolorallocate($im, 20, 20, 20);
-$noise = imagecolorallocate($im, 180, 180, 180);
+$img = imagecreatetruecolor(120, 38);
+$bg = imagecolorallocate($img, 240, 243, 246);
+$text_color = imagecolorallocate($img, 44, 62, 80);
+$line_color = imagecolorallocate($img, 189, 195, 199);
 
-for ($i = 0; $i < 5; $i++) {
-    imageline($im, rand(0, 100), rand(0, 36), rand(0, 100), rand(0, 36), $noise);
+imagefill($img, 0, 0, $bg);
+for($i=0; $i<4; $i++) {
+    imageline($img, rand(0,120), rand(0,38), rand(0,120), rand(0,38), $line_color);
 }
-imagestring($im, 5, 28, 10, $code, $fg);
-imagepng($im);
-imagedestroy($im);
-?>
+$text = "$n1 + $n2 = ?";
+imagestring($img, 5, 22, 11, $text, $text_color);
+
+header('Content-Type: image/png');
+header('Cache-Control: no-cache, no-store, must-revalidate');
+imagepng($img);
+imagedestroy($img);

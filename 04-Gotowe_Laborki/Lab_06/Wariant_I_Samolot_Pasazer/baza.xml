@@ -1,64 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
 <!DOCTYPE baza [
-<!ELEMENT baza (pasazerowie, loty, rezerwacje)>
+<!ELEMENT baza (pasazerowie, samoloty, rezerwacje)>
 <!ELEMENT pasazerowie (pasazer+)>
 <!ELEMENT pasazer (imie, nazwisko, paszport)>
 <!ATTLIST pasazer id ID #REQUIRED>
 <!ELEMENT imie (#PCDATA)>
 <!ELEMENT nazwisko (#PCDATA)>
 <!ELEMENT paszport (#PCDATA)>
-<!ELEMENT loty (lot+)>
-<!ELEMENT lot (numer_lotu, skad, dokad)>
-<!ATTLIST lot id ID #REQUIRED>
-<!ELEMENT numer_lotu (#PCDATA)>
-<!ELEMENT skad (#PCDATA)>
-<!ELEMENT dokad (#PCDATA)>
-<!ELEMENT rezerwacje (bilet+)>
-<!ELEMENT bilet (klasa, miejsce)>
-<!ATTLIST bilet id ID #REQUIRED>
-<!ATTLIST bilet ref1 IDREF #REQUIRED>
-<!ATTLIST bilet ref2 IDREF #REQUIRED>
-<!ELEMENT klasa (#PCDATA)>
+<!ELEMENT samoloty (samolot+)>
+<!ELEMENT samolot (model, linie, miejsca)>
+<!ATTLIST samolot id ID #REQUIRED>
+<!ELEMENT model (#PCDATA)>
+<!ELEMENT linie (#PCDATA)>
+<!ELEMENT miejsca (#PCDATA)>
+<!ELEMENT rezerwacje (rezerwacja+)>
+<!ELEMENT rezerwacja (lot, miejsce)>
+<!ATTLIST rezerwacja id ID #REQUIRED>
+<!ATTLIST rezerwacja ref1 IDREF #REQUIRED>
+<!ATTLIST rezerwacja ref2 IDREF #REQUIRED>
+<!ELEMENT lot (#PCDATA)>
 <!ELEMENT miejsce (#PCDATA)>
 ]>
 <baza>
- <pasazerowie>
-  <pasazer id="E1_1">
-   <imie>Krzysztof</imie>
-   <nazwisko>Kozlowski</nazwisko>
-   <paszport>EA987654</paszport>
-  </pasazer>
-  <pasazer id="E1_2">
-   <imie>Piotr</imie>
-   <nazwisko>Nowak</nazwisko>
-   <paszport>EA987654_2</paszport>
-  </pasazer>
- </pasazerowie>
- <loty>
-  <lot id="E2_1">
-   <numer_lotu>LO3801</numer_lotu>
-   <skad>Warszawa</skad>
-   <dokad>Kielce</dokad>
-  </lot>
-  <lot id="E2_2">
-   <numer_lotu>LO3801 (Wariant B)</numer_lotu>
-   <skad>Warszawa (Wariant B)</skad>
-   <dokad>Kielce (Wariant B)</dokad>
-  </lot>
- </loty>
- <rezerwacje>
-  <bilet id="R1" ref1="E1_1" ref2="E2_1">
-   <klasa>Business</klasa>
-   <miejsce>12A</miejsce>
-  </bilet>
-  <bilet id="R2" ref1="E1_1" ref2="E2_2">
-   <klasa>Business</klasa>
-   <miejsce>12A</miejsce>
-  </bilet>
-  <bilet id="R3" ref1="E1_2" ref2="E2_1">
-   <klasa>Business</klasa>
-   <miejsce>12A</miejsce>
-  </bilet>
- </rezerwacje>
+  <pasazerowie>
+    <pasazer id="E1_1">
+      <imie>Artem</imie>
+      <nazwisko>Hizhovskyi</nazwisko>
+      <paszport>AH978820</paszport>
+    </pasazer>
+    <pasazer id="E1_2">
+      <imie>Ihor</imie>
+      <nazwisko>Namachynskyi</nazwisko>
+      <paszport>IN978890</paszport>
+    </pasazer>
+    <pasazer id="E1_3">
+      <imie>Krzysztof</imie>
+      <nazwisko>Zanussi</nazwisko>
+      <paszport>PL654321</paszport>
+    </pasazer>
+  </pasazerowie>
+  <samoloty>
+    <samolot id="E2_1">
+      <model>Boeing 737-800</model>
+      <linie>LOT Polish Airlines</linie>
+      <miejsca>186</miejsca>
+    </samolot>
+    <samolot id="E2_2">
+      <model>Airbus A320neo</model>
+      <linie>Lufthansa</linie>
+      <miejsca>180</miejsca>
+    </samolot>
+    <samolot id="E2_3">
+      <model>Embraer E195</model>
+      <linie>LOT Polish Airlines</linie>
+      <miejsca>118</miejsca>
+    </samolot>
+  </samoloty>
+  <rezerwacje>
+    <rezerwacja id="R1" ref1="E1_1" ref2="E2_1">
+      <lot>LO3801 WAW-KRK</lot>
+      <miejsce>Fotel 04A (Biznes)</miejsce>
+    </rezerwacja>
+    <rezerwacja id="R2" ref1="E1_1" ref2="E2_2">
+      <lot>LH1360 FRA-WAW</lot>
+      <miejsce>Fotel 12C (Ekonomiczna)</miejsce>
+    </rezerwacja>
+    <rezerwacja id="R3" ref1="E1_2" ref2="E2_1">
+      <lot>LO3801 WAW-KRK</lot>
+      <miejsce>Fotel 04B (Biznes)</miejsce>
+    </rezerwacja>
+    <rezerwacja id="R4" ref1="E1_2" ref2="E2_3">
+      <lot>LO3922 WAW-GDN</lot>
+      <miejsce>Fotel 08D (Ekonomiczna)</miejsce>
+    </rezerwacja>
+    <rezerwacja id="R5" ref1="E1_3" ref2="E2_2">
+      <lot>LH1360 FRA-WAW</lot>
+      <miejsce>Fotel 14A (Ekonomiczna)</miejsce>
+    </rezerwacja>
+  </rezerwacje>
 </baza>

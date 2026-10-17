@@ -4,32 +4,36 @@
     <meta charset="utf-8">
     <title>Model Ramkowy i Przepełnienie</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; }
-        h2 { color: #2c3e50; margin-bottom: 15px; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 10px; margin: 0; box-sizing: border-box; }
+        h2 { color: #2c3e50; margin-bottom: 15px; font-size: 18px; }
         .box-demo {
             background-color: #ecf0f1;
             border: 4px solid #3498db;
-            padding: 20px;
-            margin: 20px 0;
-            width: 320px;
-            box-sizing: content-box;
+            padding: 15px;
+            margin: 15px 0;
+            width: 100%;
+            max-width: 290px;
+            box-sizing: border-box;
             border-radius: 6px;
         }
         .overflow-box {
-            width: 300px;
+            width: 100%;
+            max-width: 290px;
             height: 90px;
             border: 2px dashed #e67e22;
             padding: 10px;
             overflow: scroll;
             background: #fdfefe;
+            box-sizing: border-box;
             margin-top: 10px;
         }
         .minmax-box {
-            min-width: 200px;
-            max-width: 450px;
+            width: 100%;
+            max-width: 290px;
             border: 2px solid #27ae60;
             padding: 10px;
             background: #eafaf1;
+            box-sizing: border-box;
             margin-top: 15px;
         }
     </style>

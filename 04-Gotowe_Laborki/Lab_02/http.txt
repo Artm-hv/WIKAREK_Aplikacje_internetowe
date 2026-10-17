@@ -89,10 +89,10 @@ Content-Type: text/html; charset=iso-8859-1
 <html><head><title>401 Unauthorized</title></head>
 <body><h1>Unauthorized</h1><p>Wymagany login i haslo.</p></body></html>
 
-Krok 2: Żądanie z nagłówkiem Authorization (Base64: d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=):
+Krok 2: Żądanie z nagłówkiem Authorization (Base64: d3lrbGFkb3djYTp3eWtsYWRvd2Nh):
 GET /index.html HTTP/1.1
 Host: www.wykladowca.pl
-Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
+Authorization: Basic d3lrbGFkb3djYTp3eWtsYWRvd2Nh
 
 HTTP/1.1 200 OK
 Date: Sat, 17 Oct 2026 12:19:00 GMT
@@ -106,7 +106,7 @@ Content-Type: text/html; charset=UTF-8
 
 GET /materialy.html HTTP/1.1
 Host: www.wykladowca.pl
-Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
+Authorization: Basic d3lrbGFkb3djYTp3eWtsYWRvd2Nh
 
 HTTP/1.1 200 OK
 Date: Sat, 17 Oct 2026 12:20:00 GMT

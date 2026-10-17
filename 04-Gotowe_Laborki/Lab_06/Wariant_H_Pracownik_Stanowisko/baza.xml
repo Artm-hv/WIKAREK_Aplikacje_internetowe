@@ -1,64 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
 <!DOCTYPE baza [
-<!ELEMENT baza (pracownicy, stanowiska, pracowanie)>
+<!ELEMENT baza (pracownicy, stanowiska, zatrudnienia)>
 <!ELEMENT pracownicy (pracownik+)>
-<!ELEMENT pracownik (imie, nazwisko, wiek)>
+<!ELEMENT pracownik (pesel, imie, nazwisko)>
 <!ATTLIST pracownik id ID #REQUIRED>
+<!ELEMENT pesel (#PCDATA)>
 <!ELEMENT imie (#PCDATA)>
 <!ELEMENT nazwisko (#PCDATA)>
-<!ELEMENT wiek (#PCDATA)>
 <!ELEMENT stanowiska (stanowisko+)>
-<!ELEMENT stanowisko (nazwa, pensja, dzial)>
+<!ELEMENT stanowisko (nazwa, pensja, poziom)>
 <!ATTLIST stanowisko id ID #REQUIRED>
 <!ELEMENT nazwa (#PCDATA)>
 <!ELEMENT pensja (#PCDATA)>
-<!ELEMENT dzial (#PCDATA)>
-<!ELEMENT pracowanie (pracuje+)>
-<!ELEMENT pracuje (lata, miesiace)>
-<!ATTLIST pracuje id ID #REQUIRED>
-<!ATTLIST pracuje ref1 IDREF #REQUIRED>
-<!ATTLIST pracuje ref2 IDREF #REQUIRED>
-<!ELEMENT lata (#PCDATA)>
-<!ELEMENT miesiace (#PCDATA)>
+<!ELEMENT poziom (#PCDATA)>
+<!ELEMENT zatrudnienia (umowa+)>
+<!ELEMENT umowa (od_dnia, etat)>
+<!ATTLIST umowa id ID #REQUIRED>
+<!ATTLIST umowa ref1 IDREF #REQUIRED>
+<!ATTLIST umowa ref2 IDREF #REQUIRED>
+<!ELEMENT od_dnia (#PCDATA)>
+<!ELEMENT etat (#PCDATA)>
 ]>
 <baza>
- <pracownicy>
-  <pracownik id="E1_1">
-   <imie>Jan</imie>
-   <nazwisko>Kowalski</nazwisko>
-   <wiek>35</wiek>
-  </pracownik>
-  <pracownik id="E1_2">
-   <imie>Piotr</imie>
-   <nazwisko>Nowak</nazwisko>
-   <wiek>35_2</wiek>
-  </pracownik>
- </pracownicy>
- <stanowiska>
-  <stanowisko id="E2_1">
-   <nazwa>Kierownik</nazwa>
-   <pensja>5500</pensja>
-   <dzial>IT</dzial>
-  </stanowisko>
-  <stanowisko id="E2_2">
-   <nazwa>Kierownik (Wariant B)</nazwa>
-   <pensja>5500 (Wariant B)</pensja>
-   <dzial>IT (Wariant B)</dzial>
-  </stanowisko>
- </stanowiska>
- <pracowanie>
-  <pracuje id="R1" ref1="E1_1" ref2="E2_1">
-   <lata>5</lata>
-   <miesiace>6</miesiace>
-  </pracuje>
-  <pracuje id="R2" ref1="E1_1" ref2="E2_2">
-   <lata>5</lata>
-   <miesiace>6</miesiace>
-  </pracuje>
-  <pracuje id="R3" ref1="E1_2" ref2="E2_1">
-   <lata>5</lata>
-   <miesiace>6</miesiace>
-  </pracuje>
- </pracowanie>
+  <pracownicy>
+    <pracownik id="E1_1">
+      <pesel>88031205678</pesel>
+      <imie>Bartosz</imie>
+      <nazwisko>Kowalski</nazwisko>
+    </pracownik>
+    <pracownik id="E1_2">
+      <pesel>91072409812</pesel>
+      <imie>Joanna</imie>
+      <nazwisko>Czarnecka</nazwisko>
+    </pracownik>
+    <pracownik id="E1_3">
+      <pesel>85110503490</pesel>
+      <imie>Grzegorz</imie>
+      <nazwisko>Bąk</nazwisko>
+    </pracownik>
+  </pracownicy>
+  <stanowiska>
+    <stanowisko id="E2_1">
+      <nazwa>Senior PHP Developer</nazwa>
+      <pensja>14500</pensja>
+      <poziom>Senior</poziom>
+    </stanowisko>
+    <stanowisko id="E2_2">
+      <nazwa>DevOps Cloud Engineer</nazwa>
+      <pensja>16000</pensja>
+      <poziom>Senior</poziom>
+    </stanowisko>
+    <stanowisko id="E2_3">
+      <nazwa>Junior Frontend Developer</nazwa>
+      <pensja>6500</pensja>
+      <poziom>Junior</poziom>
+    </stanowisko>
+  </stanowiska>
+  <zatrudnienia>
+    <umowa id="R1" ref1="E1_1" ref2="E2_1">
+      <od_dnia>2021-04-01</od_dnia>
+      <etat>Pełny etat (1.0)</etat>
+    </umowa>
+    <umowa id="R2" ref1="E1_2" ref2="E2_2">
+      <od_dnia>2022-09-15</od_dnia>
+      <etat>Pełny etat (1.0)</etat>
+    </umowa>
+    <umowa id="R3" ref1="E1_3" ref2="E2_3">
+      <od_dnia>2025-02-01</od_dnia>
+      <etat>Pół etatu (0.5)</etat>
+    </umowa>
+    <umowa id="R4" ref1="E1_1" ref2="E2_2">
+      <od_dnia>2024-01-01</od_dnia>
+      <etat>Dodatkowy (0.25)</etat>
+    </umowa>
+  </zatrudnienia>
 </baza>

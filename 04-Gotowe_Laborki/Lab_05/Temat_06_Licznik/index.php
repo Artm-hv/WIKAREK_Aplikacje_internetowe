@@ -1,53 +1,73 @@
 <?php
-session_start();
-include "konfig.php";
-$msg = ""; $err = "";
+require_once __DIR__ . '/konfig.php';
+$conn = get_db_connection();
+
 $user_ip = $_SERVER['REMOTE_ADDR'];
 
-// Sprawdzenie czy IP jest zablokowane
-$is_blocked = false;
-if ($conn) {
-    $chk = $conn->query("SELECT * FROM zablokowane_ip WHERE ip = '$user_ip'");
-    if ($chk && $chk->num_rows > 0) $is_blocked = true;
-}
+// Sprawdzenie czy IP zablokowane
+$stmt_b = $conn->prepare("SELECT powod FROM " . TBL_PREFIX . "zablokowane_ip WHERE ip_address = ?");
+$stmt_b->bind_param("s", $user_ip);
+$stmt_b->execute();
+$is_blocked = $stmt_b->get_result()->fetch_assoc();
+$stmt_b->close();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['dodaj_wpis'])) {
-    if ($is_blocked) {
-        $err = "Twój adres IP ($user_ip) został zablokowany przez administratora!";
-    } elseif ($_POST['captcha'] !== $_SESSION['captcha_code']) {
-        $err = "Niepoprawny kod z obrazka CAPTCHA!";
-    } else {
-        $autor = $conn->real_escape_string($_POST['autor']);
-        $wpis = $conn->real_escape_string($_POST['wpis']);
-        $conn->query("INSERT INTO wpisy (autor, wpis, data_wpisu, ip) VALUES ('$autor', '$wpis', NOW(), '$user_ip')");
-        $msg = "Dziękujemy! Wpis został dodany.";
+if (!$is_blocked) {
+    // Sprawdzenie debounce (czy minęło DEBOUNCE_WINDOW_MIN od ostatniej wizyty)
+    $stmt_c = $conn->prepare("SELECT id FROM " . TBL_PREFIX . "wizyty_ip WHERE ip_address = ? AND ostatnia_aktywnosc > NOW() - INTERVAL " . DEBOUNCE_WINDOW_MIN . " MINUTE");
+    $stmt_c->bind_param("s", $user_ip);
+    $stmt_c->execute();
+    $recent = $stmt_c->get_result()->fetch_assoc();
+    $stmt_c->close();
+
+    if (!$recent) {
+        // Nowa unikalna wizyta -> zwiększ łączny licznik
+        $conn->query("UPDATE " . TBL_PREFIX . "licznik_stat SET lacznie_odwiedzin = lacznie_odwiedzin + 1 WHERE id = 1");
     }
+
+    // Aktualizacja czasu aktywności dla online
+    $stmt_u = $conn->prepare("INSERT INTO " . TBL_PREFIX . "wizyty_ip (ip_address, ostatnia_aktywnosc) VALUES (?, NOW())");
+    $stmt_u->bind_param("s", $user_ip);
+    $stmt_u->execute();
+    $stmt_u->close();
 }
-$wpisy = $conn ? $conn->query("SELECT * FROM wpisy ORDER BY data_wpisu DESC") : null;
 ?>
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Księga Gości</title><link rel="stylesheet" href="style.css"></head>
-<body><div class="container"><header><h1>Elektroniczna Księga Gości</h1><nav><a href="admin.php">Moderacja (Admin)</a><a href="install.php">Instalator</a></nav></header>
-<?php if ($msg) echo "<div class='alert alert-success'>$msg</div>"; ?>
-<?php if ($err) echo "<div class='alert alert-danger'>$err</div>"; ?>
-<?php if (!$is_blocked): ?>
-<h2>Dodaj wpis do księgi:</h2>
-<form method="post" style="margin-bottom:25px;">
-    <div class="form-group"><label>Twój podpis / Nick:</label><input type="text" name="autor" required></div>
-    <div class="form-group"><label>Treść wiadomości:</label><textarea name="wpis" required></textarea></div>
-    <div class="form-group" style="display:flex; align-items:center; gap:10px;">
-        <img src="captcha.php" alt="CAPTCHA">
-        <input type="text" name="captcha" placeholder="Przepisz kod z rysunku" required style="width:160px;">
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Licznik Odwiedzin (GD) - PTI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container" style="max-width:700px; text-align:center;">
+    <header style="justify-content:space-between; text-align:left;">
+        <div>
+            <h1>Wizualny Licznik Odwiedzin (GD)</h1>
+            <div class="team-info">Grupa: 3ID11B | Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)</div>
+        </div>
+        <div>
+            <a href="admin.php" class="btn">Panel Administratora</a>
+        </div>
+    </header>
+
+    <?php if ($is_blocked): ?>
+        <div class="alert alert-error">
+            Twój adres IP (<code><?php echo htmlspecialchars($user_ip); ?></code>) jest zablokowany.
+        </div>
+    <?php endif; ?>
+
+    <div class="alert alert-info" style="text-align:left;">
+        Licznik generowany jest dynamicznie w formacie graficznym PNG za pomocą biblioteki GD. Posiada zabezpieczenie przed sztucznym nabijaniem przy odświeżaniu (debounce <?php echo DEBOUNCE_WINDOW_MIN; ?> minut dla adresu IP).
     </div>
-    <button type="submit" name="dodaj_wpis" class="btn">Dodaj wpis</button>
-</form>
-<?php else: ?>
-<div class="alert alert-danger">Możliwość dodawania wpisów dla Twojego adresu IP została zablokowana.</div>
-<?php endif; ?>
-<h2>Wpisy gości:</h2>
-<?php if ($wpisy) while($w = $wpisy->fetch_assoc()): ?>
-<div style="border-bottom:1px solid #eee; padding:10px 0;">
-    <strong><?php echo htmlspecialchars($w['autor']); ?></strong> <span class="badge"><?php echo $w['data_wpisu']; ?></span>
-    <p style="margin-top:5px; color:#444;"><?php echo nl2br(htmlspecialchars($w['wpis'])); ?></p>
+
+    <div class="card" style="display:inline-block; padding:30px; margin-top:20px;">
+        <h3 style="margin-bottom:15px; color:#2c3e50;">Statystyka Odwiedzin Serwisu:</h3>
+        <img src="licznik_img.php?r=<?php echo rand(); ?>" alt="Graficzny Licznik Odwiedzin GD" style="border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+        <p style="margin-top:15px; font-size:13px; color:#666;">
+            Twój adres IP: <strong><?php echo htmlspecialchars($user_ip); ?></strong><br>
+            Odśwież stronę (F5) — łączny licznik nie zwiększy się natychmiast z uwagi na mechanizm debounce.
+        </p>
+    </div>
 </div>
-<?php endwhile; ?>
-</div></body></html>
+</body>
+</html>

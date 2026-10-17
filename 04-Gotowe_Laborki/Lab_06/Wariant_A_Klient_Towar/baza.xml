@@ -23,42 +23,60 @@
 <!ELEMENT ilosc (#PCDATA)>
 ]>
 <baza>
- <klienci>
-  <klient id="E1_1">
-   <imie>Jan</imie>
-   <nazwisko>Kowalski</nazwisko>
-   <miasto>Kielce</miasto>
-  </klient>
-  <klient id="E1_2">
-   <imie>Piotr</imie>
-   <nazwisko>Nowak</nazwisko>
-   <miasto>Kielce_2</miasto>
-  </klient>
- </klienci>
- <towary>
-  <towar id="E2_1">
-   <nazwa>Laptop Dell</nazwa>
-   <cena>3500</cena>
-   <kategoria>Elektronika</kategoria>
-  </towar>
-  <towar id="E2_2">
-   <nazwa>Laptop Dell (Wariant B)</nazwa>
-   <cena>3500 (Wariant B)</cena>
-   <kategoria>Elektronika (Wariant B)</kategoria>
-  </towar>
- </towary>
- <zakupy>
-  <zakup id="R1" ref1="E1_1" ref2="E2_1">
-   <data>2026-10-15</data>
-   <ilosc>2</ilosc>
-  </zakup>
-  <zakup id="R2" ref1="E1_1" ref2="E2_2">
-   <data>2026-10-15</data>
-   <ilosc>2</ilosc>
-  </zakup>
-  <zakup id="R3" ref1="E1_2" ref2="E2_1">
-   <data>2026-10-15</data>
-   <ilosc>2</ilosc>
-  </zakup>
- </zakupy>
+  <klienci>
+    <klient id="E1_1">
+      <imie>Jan</imie>
+      <nazwisko>Kowalski</nazwisko>
+      <miasto>Kielce</miasto>
+    </klient>
+    <klient id="E1_2">
+      <imie>Anna</imie>
+      <nazwisko>Nowak</nazwisko>
+      <miasto>Kraków</miasto>
+    </klient>
+    <klient id="E1_3">
+      <imie>Piotr</imie>
+      <nazwisko>Wiśniewski</nazwisko>
+      <miasto>Warszawa</miasto>
+    </klient>
+  </klienci>
+  <towary>
+    <towar id="E2_1">
+      <nazwa>Laptop Dell Latitude</nazwa>
+      <cena>3800</cena>
+      <kategoria>Elektronika</kategoria>
+    </towar>
+    <towar id="E2_2">
+      <nazwa>Monitor LG 27 cali</nazwa>
+      <cena>950</cena>
+      <kategoria>Monitory</kategoria>
+    </towar>
+    <towar id="E2_3">
+      <nazwa>Klawiatura mechaniczna</nazwa>
+      <cena>280</cena>
+      <kategoria>Akcesoria</kategoria>
+    </towar>
+  </towary>
+  <zakupy>
+    <zakup id="R1" ref1="E1_1" ref2="E2_1">
+      <data>2026-10-12</data>
+      <ilosc>1</ilosc>
+    </zakup>
+    <zakup id="R2" ref1="E1_1" ref2="E2_3">
+      <data>2026-10-14</data>
+      <ilosc>2</ilosc>
+    </zakup>
+    <zakup id="R3" ref1="E1_2" ref2="E2_2">
+      <data>2026-10-15</data>
+      <ilosc>1</ilosc>
+    </zakup>
+    <zakup id="R4" ref1="E1_3" ref2="E2_1">
+      <data>2026-10-16</data>
+      <ilosc>1</ilosc>
+    </zakup>
+    <zakup id="R5" ref1="E1_3" ref2="E2_2">
+      <data>2026-10-17</data>
+      <ilosc>2</ilosc>
+    </zakup>
+  </zakupy>
 </baza>

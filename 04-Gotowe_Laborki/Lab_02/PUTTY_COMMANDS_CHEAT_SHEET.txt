@@ -31,19 +31,16 @@ HEAD /index.html HTTP/1.1
 Host: www.student.pl
 
 
-[1.c] www.wykladowca.pl:80 - Basic Auth (wykładowca:wykładowca)
+[1.c] www.wykladowca.pl:80 - Basic Auth (wykladowca:wykladowca)
 Połącz się z: 10.0.0.41 Port: 80
-Wklej (dla UTF-8):
+Wklej:
 GET /index.html HTTP/1.1
 Host: www.wykladowca.pl
-Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
+Authorization: Basic d3lrbGFkb3djYTp3eWtsYWRvd2Nh
 
 GET /materialy.html HTTP/1.1
 Host: www.wykladowca.pl
-Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
-
-*(Alternatywny hash Base64 dla kodowania ISO-8859-2, gdyby serwer nie przyjął UTF-8)*:
-Authorization: Basic d3lrbLFkb3djYTp3eWtsbLFkb3djYQ==
+Authorization: Basic d3lrbGFkb3djYTp3eWtsYWRvd2Nh
 
 
 --------------------------------------------------------------------------------

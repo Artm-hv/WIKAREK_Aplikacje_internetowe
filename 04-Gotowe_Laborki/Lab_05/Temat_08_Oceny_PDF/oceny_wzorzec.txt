@@ -1,5 +1,5 @@
-PTI;Podstawy Technologii Internetowych;2026-10-15
-97882;5.0
-97889;5.0
-12345;4.5
-54321;3.0
+PTI-01, Podstawy Technologii Internetowych O'Reilly, 2026-10-15
+97882; 5.0
+97889; 4.5
+95123; 3.5
+96221; 4.0

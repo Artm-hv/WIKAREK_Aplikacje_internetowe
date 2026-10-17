@@ -3,62 +3,76 @@
 <!DOCTYPE baza [
 <!ELEMENT baza (uczestnicy, wycieczki, rezerwacje)>
 <!ELEMENT uczestnicy (uczestnik+)>
-<!ELEMENT uczestnik (imie, nazwisko, kraj)>
+<!ELEMENT uczestnik (imie, nazwisko, paszport)>
 <!ATTLIST uczestnik id ID #REQUIRED>
 <!ELEMENT imie (#PCDATA)>
 <!ELEMENT nazwisko (#PCDATA)>
-<!ELEMENT kraj (#PCDATA)>
+<!ELEMENT paszport (#PCDATA)>
 <!ELEMENT wycieczki (wycieczka+)>
-<!ELEMENT wycieczka (cel, dni, cena)>
+<!ELEMENT wycieczka (kraj, miasto, cena)>
 <!ATTLIST wycieczka id ID #REQUIRED>
-<!ELEMENT cel (#PCDATA)>
-<!ELEMENT dni (#PCDATA)>
+<!ELEMENT kraj (#PCDATA)>
+<!ELEMENT miasto (#PCDATA)>
 <!ELEMENT cena (#PCDATA)>
 <!ELEMENT rezerwacje (rezerwacja+)>
-<!ELEMENT rezerwacja (data_zaliczki, status)>
+<!ELEMENT rezerwacja (data, zaliczka)>
 <!ATTLIST rezerwacja id ID #REQUIRED>
 <!ATTLIST rezerwacja ref1 IDREF #REQUIRED>
 <!ATTLIST rezerwacja ref2 IDREF #REQUIRED>
-<!ELEMENT data_zaliczki (#PCDATA)>
-<!ELEMENT status (#PCDATA)>
+<!ELEMENT data (#PCDATA)>
+<!ELEMENT zaliczka (#PCDATA)>
 ]>
 <baza>
- <uczestnicy>
-  <uczestnik id="E1_1">
-   <imie>Tomasz</imie>
-   <nazwisko>Nowak</nazwisko>
-   <kraj>Polska</kraj>
-  </uczestnik>
-  <uczestnik id="E1_2">
-   <imie>Piotr</imie>
-   <nazwisko>Nowak</nazwisko>
-   <kraj>Polska_2</kraj>
-  </uczestnik>
- </uczestnicy>
- <wycieczki>
-  <wycieczka id="E2_1">
-   <cel>Gory Swietokrzyskie</cel>
-   <dni>3</dni>
-   <cena>450</cena>
-  </wycieczka>
-  <wycieczka id="E2_2">
-   <cel>Gory Swietokrzyskie (Wariant B)</cel>
-   <dni>3 (Wariant B)</dni>
-   <cena>450 (Wariant B)</cena>
-  </wycieczka>
- </wycieczki>
- <rezerwacje>
-  <rezerwacja id="R1" ref1="E1_1" ref2="E2_1">
-   <data_zaliczki>2026-09-20</data_zaliczki>
-   <status>Oplacona</status>
-  </rezerwacja>
-  <rezerwacja id="R2" ref1="E1_1" ref2="E2_2">
-   <data_zaliczki>2026-09-20</data_zaliczki>
-   <status>Oplacona</status>
-  </rezerwacja>
-  <rezerwacja id="R3" ref1="E1_2" ref2="E2_1">
-   <data_zaliczki>2026-09-20</data_zaliczki>
-   <status>Oplacona</status>
-  </rezerwacja>
- </rezerwacje>
+  <uczestnicy>
+    <uczestnik id="E1_1">
+      <imie>Damian</imie>
+      <nazwisko>Szymański</nazwisko>
+      <paszport>EB123456</paszport>
+    </uczestnik>
+    <uczestnik id="E1_2">
+      <imie>Monika</imie>
+      <nazwisko>Woźniak</nazwisko>
+      <paszport>EC789012</paszport>
+    </uczestnik>
+    <uczestnik id="E1_3">
+      <imie>Rafał</imie>
+      <nazwisko>Kamiński</nazwisko>
+      <paszport>ED345678</paszport>
+    </uczestnik>
+  </uczestnicy>
+  <wycieczki>
+    <wycieczka id="E2_1">
+      <kraj>Grecja</kraj>
+      <miasto>Ateny i Santorini</miasto>
+      <cena>3200</cena>
+    </wycieczka>
+    <wycieczka id="E2_2">
+      <kraj>Włochy</kraj>
+      <miasto>Rzym i Florencja</miasto>
+      <cena>2850</cena>
+    </wycieczka>
+    <wycieczka id="E2_3">
+      <kraj>Hiszpania</kraj>
+      <miasto>Barcelona</miasto>
+      <cena>3100</cena>
+    </wycieczka>
+  </wycieczki>
+  <rezerwacje>
+    <rezerwacja id="R1" ref1="E1_1" ref2="E2_1">
+      <data>2026-10-02</data>
+      <zaliczka>Opłacona w całości</zaliczka>
+    </rezerwacja>
+    <rezerwacja id="R2" ref1="E1_1" ref2="E2_2">
+      <data>2026-10-08</data>
+      <zaliczka>Zaliczka 30%</zaliczka>
+    </rezerwacja>
+    <rezerwacja id="R3" ref1="E1_2" ref2="E2_3">
+      <data>2026-10-10</data>
+      <zaliczka>Opłacona w całości</zaliczka>
+    </rezerwacja>
+    <rezerwacja id="R4" ref1="E1_3" ref2="E2_1">
+      <data>2026-10-15</data>
+      <zaliczka>Oczekuje na przelew</zaliczka>
+    </rezerwacja>
+  </rezerwacje>
 </baza>

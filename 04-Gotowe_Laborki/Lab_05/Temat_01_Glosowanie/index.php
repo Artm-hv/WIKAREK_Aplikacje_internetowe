@@ -1,47 +1,74 @@
 <?php
-session_start();
-include "konfig.php";
-$msg = "";
-$err = "";
+require_once __DIR__ . '/konfig.php';
+$conn = get_db_connection();
 
-// Obsługa głosu
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['glosuj'])) {
-    $pos_id = (int)$_POST['pozycja_id'];
-    $captcha = trim($_POST['captcha']);
-    $user_ip = $_SERVER['REMOTE_ADDR'];
+$page = isset($_GET['strona']) ? max(1, (int)$_GET['strona']) : 1;
+$limit = ITEMS_PER_PAGE;
+$offset = ($page - 1) * $limit;
 
-    if ($captcha !== $_SESSION['captcha_code']) {
-        $err = "Błędny kod z obrazka CAPTCHA!";
-    } else {
-        // Sprawdzenie blokady IP (np. 10 minut)
-        $check = $conn->query("SELECT id FROM glosujacy_ip WHERE ip_address = '$user_ip' AND pozycja_id = $pos_id AND data_glosu > NOW() - INTERVAL 10 MINUTE");
-        if ($check && $check->num_rows > 0) {
-            $err = "Oddałeś już głos na tę pozycję z adresu $user_ip w ciągu ostatnich 10 minut!";
-        } else {
-            $conn->query("UPDATE pozycje SET glosy = glosy + 1 WHERE id = $pos_id");
-            $conn->query("INSERT INTO glosujacy_ip (pozycja_id, ip_address, data_glosu) VALUES ($pos_id, '$user_ip', NOW())");
-            $msg = "Dziękujemy! Twój głos został zarejestrowany.";
-        }
-    }
-}
+$total_res = $conn->query("SELECT COUNT(*) as cnt FROM " . TBL_PREFIX . "wiadomosci");
+$total_rows = $total_res->fetch_assoc()['cnt'];
+$total_pages = ceil($total_rows / $limit);
 
-$pozycje = $conn ? $conn->query("SELECT * FROM pozycje ORDER BY glosy DESC") : null;
+$stmt = $conn->prepare("SELECT id, tytul, autor, plik_tresci, data_dodania FROM " . TBL_PREFIX . "wiadomosci ORDER BY data_dodania DESC, id DESC LIMIT ? OFFSET ?");
+$stmt->bind_param("ii", $limit, $offset);
+$stmt->execute();
+$wiadomosci = $stmt->get_result();
 ?>
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>System Głosowania</title><link rel="stylesheet" href="style.css"></head>
-<body><div class="container"><header><h1>System Oceniania i Głosowania</h1><nav><a href="admin.php">Panel Administratora</a><a href="install.php">Instalator</a></nav></header>
-<?php if ($msg) echo "<div class='alert alert-success'>$msg</div>"; ?>
-<?php if ($err) echo "<div class='alert alert-danger'>$err</div>"; ?>
-<h2>Lista pozycji do głosowania:</h2>
-<?php if ($pozycje && $pozycje->num_rows > 0): while($row = $pozycje->fetch_assoc()): ?>
-    <div style="background:#fdfdfd; border:1px solid #ddd; padding:15px; border-radius:6px; margin-bottom:15px;">
-        <h3><?php echo htmlspecialchars($row['tytul']); ?> <span class="badge">Głosów: <?php echo $row['glosy']; ?></span></h3>
-        <p style="margin:8px 0;"><?php echo nl2br(htmlspecialchars($row['opis'])); ?></p>
-        <form method="post" style="display:flex; gap:10px; align-items:center;">
-            <input type="hidden" name="pozycja_id" value="<?php echo $row['id']; ?>">
-            <img src="captcha.php" alt="CAPTCHA" style="vertical-align:middle; border:1px solid #ccc;">
-            <input type="text" name="captcha" placeholder="Kod z obrazka" required style="width:120px;">
-            <button type="submit" name="glosuj" class="btn">Oddaj głos</button>
-        </form>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>System Publikacji Wiadomości - PTI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div>
+            <h1>Portal Informacyjny (Wiadomości)</h1>
+            <div class="team-info">Grupa: 3ID11B | Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)</div>
+        </div>
+        <div>
+            <a href="admin.php" class="btn">Panel Administratora</a>
+        </div>
+    </header>
+
+    <div class="alert alert-info">
+        Wiadomości przechowywane są na dysku w plikach tekstowych HTML i porcjowane od najnowszych.
     </div>
-<?php endwhile; else: echo "<p>Brak pozycji. Zainstaluj bazę w install.php!</p>"; endif; ?>
-</div></body></html>
+
+    <?php if ($wiadomosci->num_rows > 0): ?>
+        <?php while($row = $wiadomosci->fetch_assoc()): ?>
+            <?php 
+                $file_path = NEWS_DIR . '/' . $row['plik_tresci'];
+                $content = file_exists($file_path) ? file_get_contents($file_path) : '<em>Brak pliku treści na dysku.</em>';
+            ?>
+            <article class="card">
+                <h2 style="color:#2c3e50; font-size:20px; margin-bottom:8px;"><?php echo htmlspecialchars($row['tytul']); ?></h2>
+                <div style="font-size:12px; color:#7f8c8d; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:5px;">
+                    Autor: <strong><?php echo htmlspecialchars($row['autor']); ?></strong> | Data: <?php echo htmlspecialchars($row['data_dodania']); ?> | Plik: <code><?php echo htmlspecialchars($row['plik_tresci']); ?></code>
+                </div>
+                <div class="news-body" style="line-height:1.6; font-size:15px;">
+                    <?php echo $content; ?>
+                </div>
+            </article>
+        <?php endwhile; ?>
+
+        <?php if ($total_pages > 1): ?>
+            <div class="pagination">
+                <?php for($i=1; $i<=$total_pages; $i++): ?>
+                    <?php if ($i == $page): ?>
+                        <span class="active"><?php echo $i; ?></span>
+                    <?php else: ?>
+                        <a href="index.php?strona=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    <?php endif; ?>
+                <?php endfor; ?>
+            </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <p style="text-align:center; padding:30px; color:#777;">Brak opublikowanych wiadomości.</p>
+    <?php endif; ?>
+</div>
+</body>
+</html>

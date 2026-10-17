@@ -28,7 +28,7 @@
             transition: transform 0.2s, background 0.2s;
         }
         button.btn-action:hover { background: #ff5773; transform: scale(1.05); }
-        #canvas-anim { margin-top: 15px; border-radius: 8px; border: 1px solid #e94560; }
+        #canvas-anim { margin-top: 15px; border-radius: 8px; border: 1px solid #e94560; max-width: 100%; height: auto; display: block; }
     </style>
 </head>
 <body>
@@ -38,7 +38,7 @@
         <button class="btn-action" onclick="toggleColor()">Zmień Tryb Kolorów</button>
         <button class="btn-action" onclick="resetCanvas()">Generuj Cząstki</button>
         <br>
-        <canvas id="canvas-anim" width="380" height="160"></canvas>
+        <canvas id="canvas-anim" width="290" height="150"></canvas>
     </div>
     <script>
         const canvas = document.getElementById("canvas-anim");
