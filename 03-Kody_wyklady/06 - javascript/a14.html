@@ -1,0 +1,20 @@
+<head>
+ <script>
+ function pokazZegar() 
+ {
+  const teraz = new Date();
+  let godziny = teraz.getHours();
+  let minuty = teraz.getMinutes();
+  let sekundy = teraz.getSeconds();
+  godziny = godziny < 10 ? "0" + godziny : godziny;
+  minuty = minuty < 10 ? "0" + minuty : minuty;
+  sekundy = sekundy < 10 ? "0" + sekundy : sekundy;
+  const czas = `${godziny}:${minuty}:${sekundy}`;
+  document.getElementById("zegar").innerText = czas;
+  setTimeout(pokazZegar, 1000);   
+ } 
+ </script>
+</head>
+<body onload=pokazZegar()>
+  <div id="zegar" ></div>
+</body>

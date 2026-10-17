@@ -1,0 +1,8 @@
+<!ELEMENT Nazwisko (#PCDATA)>
+<!ELEMENT Wiek (#PCDATA)>
+<!ELEMENT Zawodnik (Nazwisko,Wiek)>
+<!ELEMENT Panstwo (Zawodnik+)>
+<!ELEMENT Uczestnicy (Panstwo+)>
+<!ATTLIST Panstwo nazwa CDATA #REQUIRED>
+<!ATTLIST Zawodnik PlecZ (K|M) #REQUIRED>
+<!ATTLIST Zawodnik id ID #REQUIRED>

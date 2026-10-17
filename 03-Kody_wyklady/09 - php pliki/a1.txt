@@ -1,0 +1,5 @@
+To jest plik a1.txt
+druga linia pliku 
+
+Kolejna Linia
+Koniec pliku

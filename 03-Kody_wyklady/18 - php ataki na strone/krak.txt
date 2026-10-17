@@ -1,0 +1,2 @@
+LOGIN => NOWAK.
+HASLO => ASDWER.

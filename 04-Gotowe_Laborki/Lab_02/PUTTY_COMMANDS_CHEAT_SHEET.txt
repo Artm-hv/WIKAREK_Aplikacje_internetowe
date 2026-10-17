@@ -1,0 +1,131 @@
+================================================================================
+SZCZEGÓŁOWA ŚCIĄGAWKA POLECEŃ PUTTY - LABORATORIUM 2 (PROTOKOŁY)
+Grupa: 3ID11B | Artem Hizhovskyi (97882) & Ihor Namachynskyi (97889)
+Konfiguracja PuTTY:
+- Connection type: Telnet
+- Close window on exit: Never
+- Telnet negotiation mode (w sekcji Connection -> Telnet): Passive
+================================================================================
+
+--------------------------------------------------------------------------------
+CZĘŚĆ 1: PROTOKÓŁ HTTP (Serwer 10.0.0.41) -> Wyniki kopiujemy do http.txt
+--------------------------------------------------------------------------------
+
+[1.a] www.student.pl:80 - pobranie index.html, materialy.html, a1.gif
+Połącz się z: 10.0.0.41 Port: 80
+Wklej i wciśnij 2 razy Enter:
+GET /index.html HTTP/1.1
+Host: www.student.pl
+
+GET /materialy.html HTTP/1.1
+Host: www.student.pl
+
+GET /a1.gif HTTP/1.1
+Host: www.student.pl
+
+
+[1.b] www.student.pl:8080 - nagłówek HEAD /index.html
+Połącz się z: 10.0.0.41 Port: 8080
+Wklej i wciśnij 2 razy Enter:
+HEAD /index.html HTTP/1.1
+Host: www.student.pl
+
+
+[1.c] www.wykladowca.pl:80 - Basic Auth (wykładowca:wykładowca)
+Połącz się z: 10.0.0.41 Port: 80
+Wklej (dla UTF-8):
+GET /index.html HTTP/1.1
+Host: www.wykladowca.pl
+Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
+
+GET /materialy.html HTTP/1.1
+Host: www.wykladowca.pl
+Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
+
+*(Alternatywny hash Base64 dla kodowania ISO-8859-2, gdyby serwer nie przyjął UTF-8)*:
+Authorization: Basic d3lrbLFkb3djYTp3eWtsbLFkb3djYQ==
+
+
+--------------------------------------------------------------------------------
+CZĘŚĆ 2: PROTOKOŁY SMTP I POP3 (poczta.student.pl) -> Do poczta.txt
+--------------------------------------------------------------------------------
+
+[2.a-d] WYSYŁANIE POCZTY (SMTP)
+Połącz się z: 10.0.0.41 Port: 25
+
+--- 2.a: List do sąsiedniego zespołu (student2) ---
+HELO poczta.student.pl
+MAIL FROM: <student1@poczta.student.pl>
+RCPT TO: <student2@poczta.student.pl>
+DATA
+Czesc, pozdrowienia z grupy 3ID11B!
+.
+
+--- 2.b: List do nieistniejącego użytkownika (test błędu 550) ---
+MAIL FROM: <student1@poczta.student.pl>
+RCPT TO: <nieistniejacy999@poczta.student.pl>
+RSET
+
+--- 2.c: List na swoje konto od nieistniejącego użytkownika ---
+MAIL FROM: <duch@poczta.student.pl>
+RCPT TO: <student1@poczta.student.pl>
+DATA
+Wiadomosc od nieistniejacego nadawcy.
+.
+
+--- 2.d: List z pełnymi polami nagłówka ---
+MAIL FROM: <student1@poczta.student.pl>
+RCPT TO: <student1@poczta.student.pl>
+DATA
+From: <student1@poczta.student.pl>
+To: <student1@poczta.student.pl>
+Subject: Test naglowkow - Grupa 3ID11B
+Date: Sat, 17 Oct 2026 12:00:00 +0200
+
+Tresc wiadomosci z naglowkami wg slajdu 100 wykladu 4.
+.
+QUIT
+
+
+[2.e-h] ODBIERANIE POCZTY (POP3)
+Połącz się z: 10.0.0.41 Port: 110
+
+USER student1
+PASS student1
+STAT
+LIST
+TOP 1 0
+RETR 999
+DELE 1
+QUIT
+
+
+--------------------------------------------------------------------------------
+CZĘŚĆ 3: PROTOKÓŁ FTP PRZEZ PUTTY -> Do ftp1.txt
+--------------------------------------------------------------------------------
+Połącz się z: 10.0.0.41 Port: 21
+
+USER student1
+PASS student1
+PASV
+--- Zwróci np.: 227 Entering Passive Mode (10,0,0,41,p1,p2) ---
+--- Oblicz port: p1 * 256 + p2 (np. 10 * 256 + 15 = 2575) ---
+--- Otwórz drugie okno PuTTY na 10.0.0.41 port 2575 ---
+W pierwszym oknie wpisz:
+LIST
+--- W drugim oknie pojawi się lista plików ---
+
+W pierwszym oknie:
+PASV
+--- Oblicz nowy port, otwórz kolejne okno PuTTY na ten port ---
+W pierwszym oknie:
+RETR index.html
+
+W pierwszym oknie:
+MKD TMP
+CWD TMP
+PASV
+--- Oblicz port, połącz się nowym PuTTY na ten port, wpisz treść g_3ID11B_97882_97889.txt ---
+W pierwszym oknie:
+STOR g_3ID11B_97882_97889.txt
+QUIT

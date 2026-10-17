@@ -1,0 +1,16 @@
+<!ELEMENT panstwo (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT wynik (#PCDATA)>
+<!ELEMENT zloto	(panstwo,nazwisko,wynik)>
+<!ELEMENT srebro (panstwo,nazwisko,wynik)>
+<!ELEMENT braz 	(panstwo,nazwisko,wynik)>
+<!ELEMENT konkurencja (zloto,srebro,braz)>
+<!ELEMENT plec 	(konkurencja+)>
+<!ELEMENT dyscyplina (plec,plec?)>
+<!ELEMENT igrzyskaOlimpijskie (dyscyplina+)>
+<!ATTLIST igrzyskaOlimpijskie miasto CDATA #REQUIRED>
+<!ATTLIST igrzyskaOlimpijskie rok CDATA #REQUIRED>
+<!ATTLIST dyscyplina nazwa CDATA #REQUIRED>
+<!ATTLIST plec nazwa (K|M) #REQUIRED>
+<!ATTLIST konkurencja nazwa CDATA  #REQUIRED>
+

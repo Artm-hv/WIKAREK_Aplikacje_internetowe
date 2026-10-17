@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type"
+   content="text/html; charset=utf-8" />
+  <meta name="Description" content="Opis
+   strony" />
+  <meta name="Keywords" content="Słowa
+   rozdzielone przecinkami" />
+  <title>Tytuł strony</title>
+ </head>
+ <body>
+  <p>Podaj swoje nazwisko: 
+   <input type="text" name="nazwisko" 
+    value="Kowalski" size="30" maxlength="40">
+  </p>
+  <p> <input type="radio" name="plec" value="Kobieta" checked="checked"> Kobieta</p>
+  <p> <input type="radio" name="plec" value="Mężczyzna"> Mężczyzna </p>
+  <p><input type="checkbox" name="jezyk1" value="angielski"> angielski</p>
+  <p><input type="checkbox" name="jezyk2" value="francuski"> francuski</p>
+  <p><strong>Wybierz produkt: </strong></p>
+    <select name="owoce" size="3">
+	 <option> Truskawki </option>
+	 <option> Maliny </option>
+	 <option> Poziomki </option>
+	 <option> Wiśnie </option>
+	 <option> Śliwki </option>
+    </select>
+  <p><strong>Wybierz produkt:</strong></p>
+   <select name="owoce" size="8">
+    <optgroup label="Owoce miękkie">
+     <option> Truskawki </option> 
+     <option> Maliny </option> 
+     <option> Poziomki </option> 
+    </optgroup>
+    <optgroup label="Owoce twarde">
+     <option> Jabłka </option> 
+     <option> Gruszki </option> 
+   </optgroup>
+  </select>
+  <p>
+   <textarea name=”uwagi” rows=”8” cols=”50” style=”color: gray; ”>
+     tutaj jest miejsce na twoje swobodne uwagi
+   </textarea>
+  </p>
+ </body>
+</html>

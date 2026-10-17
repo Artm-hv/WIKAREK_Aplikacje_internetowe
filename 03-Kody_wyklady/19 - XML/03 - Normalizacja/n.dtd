@@ -1,0 +1,21 @@
+<!ENTITY  ucz  SYSTEM "n1.xml">
+<!ENTITY  zaw  SYSTEM "n2.xml">
+<!ENTITY % ucz_d  SYSTEM "n1.dtd">
+<!ENTITY % zaw_d  SYSTEM "n2.dtd">
+%ucz_d;
+%zaw_d;
+<!ELEMENT zloto (#PCDATA)>
+<!ELEMENT srebro (#PCDATA)>
+<!ELEMENT braz (#PCDATA)>
+<!ELEMENT wynik (zloto,srebro,braz)>
+<!ELEMENT igrzyskaOlimpijskie (Uczestnicy,Zawody,wynik+)>
+<!ATTLIST igrzyskaOlimpijskie miasto CDATA #REQUIRED>
+<!ATTLIST igrzyskaOlimpijskie rok CDATA #REQUIRED>
+<!ATTLIST zloto idz IDREF #REQUIRED>
+<!ATTLIST zloto idk IDREF #REQUIRED>
+<!ATTLIST srebro idz IDREF #REQUIRED>
+<!ATTLIST srebro idk IDREF #REQUIRED>
+<!ATTLIST braz idz IDREF #REQUIRED>
+<!ATTLIST braz idk IDREF #REQUIRED>
+
+

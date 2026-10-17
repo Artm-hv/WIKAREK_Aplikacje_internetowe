@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Formularz rejestracji</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 20px; background: #fdfefe; }
+        .form-box { max-width: 480px; margin: auto; background: white; padding: 25px; border-radius: 8px; border: 1px solid #ccd1d9; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        h2 { color: #2c3e50; text-align: center; margin-bottom: 20px; font-size: 20px; }
+        .form-group { margin-bottom: 14px; text-align: left; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 13px; color: #434a54; }
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #aab2bd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus { border-color: #3bafda; outline: none; }
+        .err-msg { color: #da4453; font-size: 12px; margin-top: 4px; display: none; }
+        button[type="submit"] {
+            width: 100%;
+            background: #2ecc71;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button[type="submit"]:hover { background: #27ae60; }
+    </style>
+</head>
+<body>
+    <div class="form-box">
+        <h2>Formularz studencki (Zabezpieczenia HTML & JS)</h2>
+        <form id="f_rejestracja" onsubmit="return walidujFormularz(event)">
+            <!-- Obowiązkowe nazwisko - zabezpieczone na poziomie HTML5 -->
+            <div class="form-group">
+                <label for="nazwisko">Nazwisko (zabezpieczenie HTML): *</label>
+                <input type="text" id="nazwisko" name="nazwisko" required pattern="[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ\s\-]{2,30}" placeholder="Wpisz nazwisko">
+            </div>
+
+            <!-- Obowiązkowe imię - zabezpieczone na poziomie JS -->
+            <div class="form-group">
+                <label for="imie">Imię (zabezpieczenie JS): *</label>
+                <input type="text" id="imie" name="imie" placeholder="Wpisz imię">
+                <div id="err_imie" class="err-msg">Imię jest wymagane i musi zawierać wyłącznie litery (min. 2 znaki)!</div>
+            </div>
+
+            <!-- Obowiązkowy numer albumu - 6 cyfr, mogą być zera na początku -->
+            <div class="form-group">
+                <label for="numer_albumu">Numer albumu (dokładnie 6 cyfr): *</label>
+                <input type="text" id="numer_albumu" name="numer_albumu" maxlength="6" placeholder="np. 097882">
+                <div id="err_album" class="err-msg">Numer albumu musi składać się z dokładnie 6 cyfr!</div>
+            </div>
+
+            <!-- Obowiązkowa data urodzenia - osoba musi mieć co najmniej 16 lat -->
+            <div class="form-group">
+                <label for="data_urodzenia">Data urodzenia (wiek min. 16 lat): *</label>
+                <input type="date" id="data_urodzenia" name="data_urodzenia" required>
+                <div id="err_data" class="err-msg">Musisz mieć co najmniej 16 lat!</div>
+            </div>
+
+            <button type="submit">Prześlij dane</button>
+        </form>
+    </div>
+
+    <script>
+        function walidujFormularz(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // 1. Walidacja imienia w JS
+            const imie = document.getElementById("imie").value.trim();
+            const imieRegex = /^[A-Za-ząćęłńóśźżĄĆĘŁŃÓŚŹŻ]{2,30}$/u;
+            if (!imieRegex.test(imie)) {
+                document.getElementById("err_imie").style.display = "block";
+                isValid = false;
+            } else {
+                document.getElementById("err_imie").style.display = "none";
+            }
+
+            // 2. Walidacja numeru albumu (6 cyfr, mogą być zera)
+            const album = document.getElementById("numer_albumu").value.trim();
+            const albumRegex = /^[0-9]{6}$/;
+            if (!albumRegex.test(album)) {
+                document.getElementById("err_album").style.display = "block";
+                isValid = false;
+            } else {
+                document.getElementById("err_album").style.display = "none";
+            }
+
+            // 3. Walidacja wieku (min. 16 lat)
+            const birthDateInput = document.getElementById("data_urodzenia").value;
+            if (!birthDateInput) {
+                document.getElementById("err_data").style.display = "block";
+                isValid = false;
+            } else {
+                const birthDate = new Date(birthDateInput);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                if (age < 16) {
+                    document.getElementById("err_data").style.display = "block";
+                    isValid = false;
+                } else {
+                    document.getElementById("err_data").style.display = "none";
+                }
+            }
+
+            // 4. Pytanie czy przesłać dane
+            if (isValid) {
+                const potwierdzenie = confirm("Wszystkie dane wprowadzone poprawnie!\nCzy na pewno chcesz przesłać zgłoszenie?");
+                if (potwierdzenie) {
+                    alert("Dane zostały pomyślnie przesłane!");
+                    document.getElementById("f_rejestracja").reset();
+                }
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

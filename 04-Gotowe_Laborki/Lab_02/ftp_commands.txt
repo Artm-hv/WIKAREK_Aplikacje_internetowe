@@ -1,0 +1,10 @@
+student1
+student1
+binary
+mkdir spr
+cd spr
+put http.txt
+put poczta.txt
+put ftp1.txt
+ls
+bye

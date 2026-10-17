@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ns5.xsl"?>
+<!DOCTYPE igrzyskaOlimpijskie [ 
+<!ELEMENT Nazwisko (#PCDATA)>
+<!ELEMENT Wiek (#PCDATA)>
+<!ELEMENT Zawodnik (Nazwisko,Wiek)>
+<!ELEMENT Panstwo (Zawodnik+)>
+<!ELEMENT Uczestnicy (Panstwo+)>
+<!ATTLIST Panstwo nazwa CDATA #REQUIRED>
+<!ATTLIST Zawodnik PlecZ (K|M) #REQUIRED>
+<!ATTLIST Zawodnik id ID #REQUIRED>
+<!ELEMENT Konkurencja (#PCDATA)>
+<!ELEMENT Plec 	(Konkurencja+)>
+<!ELEMENT Dyscyplina (Plec+)>
+<!ELEMENT Zawody (Dyscyplina+)>
+<!ATTLIST Konkurencja id ID #REQUIRED>
+<!ATTLIST Konkurencja Nazwa CDATA  #REQUIRED>
+<!ATTLIST Plec Nazwa (K|M) #REQUIRED>
+<!ATTLIST Dyscyplina Nazwa CDATA #REQUIRED>
+<!ELEMENT zloto (#PCDATA)>
+<!ELEMENT srebro (#PCDATA)>
+<!ELEMENT braz (#PCDATA)>
+<!ELEMENT wynik (zloto,srebro,braz)>
+<!ELEMENT igrzyskaOlimpijskie (Uczestnicy,Zawody,wynik+)>
+<!ATTLIST igrzyskaOlimpijskie miasto CDATA #REQUIRED>
+<!ATTLIST igrzyskaOlimpijskie rok CDATA #REQUIRED>
+<!ATTLIST zloto idz IDREF #REQUIRED>
+<!ATTLIST zloto idk IDREF #REQUIRED>
+<!ATTLIST srebro idz IDREF #REQUIRED>
+<!ATTLIST srebro idk IDREF #REQUIRED>
+<!ATTLIST braz idz IDREF #REQUIRED>
+<!ATTLIST braz idk IDREF #REQUIRED>
+]>
+<igrzyskaOlimpijskie miasto="Ateny" rok="2004">
+<Uczestnicy>
+  <Panstwo nazwa="Polska">
+   <Zawodnik id="Z01" PlecZ="M">
+     <Nazwisko>Kowalski</Nazwisko>
+     <Wiek>23</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z02" PlecZ="M">
+     <Nazwisko>Nowak</Nazwisko>
+     <Wiek>42</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z03" PlecZ="K">
+     <Nazwisko>Duda</Nazwisko>
+     <Wiek>31</Wiek>
+   </Zawodnik>
+ </Panstwo>
+ <Panstwo nazwa="Francja">
+   <Zawodnik id="Z04" PlecZ="M">
+     <Nazwisko>Olaf</Nazwisko>
+     <Wiek>22</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z05" PlecZ="M">
+     <Nazwisko>Buda</Nazwisko>
+     <Wiek>44</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z06" PlecZ="K">
+     <Nazwisko>Graf</Nazwisko>
+     <Wiek>23</Wiek>
+   </Zawodnik>
+ </Panstwo>
+</Uczestnicy>
+<Zawody>
+   <Dyscyplina Nazwa="Lekka Atletyka">
+    <Plec Nazwa="K">
+      <Konkurencja id="K01" Nazwa="Bieg na 100 metrów">
+      </Konkurencja>
+      <Konkurencja id="K02" Nazwa="Bieg na 400 metrów">
+      </Konkurencja>
+   </Plec>
+   <Plec Nazwa="M">
+     <Konkurencja id="K03" Nazwa="Bieg na 100 metrów">
+     </Konkurencja>
+     <Konkurencja id="K04" Nazwa="Bieg na 400 metrów">
+     </Konkurencja>
+   </Plec>
+  </Dyscyplina>
+  <Dyscyplina Nazwa="Plywanie">
+  <Plec Nazwa="K">
+   <Konkurencja id="K05" Nazwa="Delfin 100 metrów">
+   </Konkurencja>
+   <Konkurencja id="K06" Nazwa="Na wznak 100 metrów">
+   </Konkurencja>
+   </Plec>
+  </Dyscyplina>
+</Zawody>
+<wynik>
+  <zloto  idz="Z01" idk="K01">20,3</zloto>
+  <srebro idz="Z01" idk="K01">30,4</srebro>
+  <braz   idz="Z01" idk="K01">40,3</braz>
+</wynik>
+<wynik>
+  <zloto  idz="Z03" idk="K02">20,3</zloto>
+  <srebro idz="Z04" idk="K02">30,4</srebro>
+  <braz   idz="Z05" idk="K02">40,3</braz>
+</wynik>
+<wynik>
+  <zloto  idz="Z06" idk="K03">20,3</zloto>
+  <srebro idz="Z01" idk="K03">30,4</srebro>
+  <braz   idz="Z02" idk="K03">40,3</braz>
+</wynik>
+<wynik>
+  <zloto  idz="Z01" idk="K04">20,3</zloto>
+  <srebro idz="Z02" idk="K04">30,4</srebro>
+  <braz   idz="Z02" idk="K04">40,3</braz>
+</wynik>
+  </igrzyskaOlimpijskie>

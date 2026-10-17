@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Własna Inwencja Twórcza</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 25px; text-align: center; background: #1a1a2e; color: #e94560; }
+        h2 { font-size: 24px; letter-spacing: 1px; margin-bottom: 10px; }
+        .box-interactive {
+            background: #16213e;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 480px;
+            margin: auto;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            border: 2px solid #0f3460;
+        }
+        button.btn-action {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        button.btn-action:hover { background: #ff5773; transform: scale(1.05); }
+        #canvas-anim { margin-top: 15px; border-radius: 8px; border: 1px solid #e94560; }
+    </style>
+</head>
+<body>
+    <h2>Własna Inwencja Twórcza: Interaktywne Efekty CSS3 + JS Canvas</h2>
+    <div class="box-interactive">
+        <p style="color:#a2a8d3;">Projekt zrealizowany przez: <strong>Artem Hizhovskyi & Ihor Namachynskyi (3ID11B)</strong></p>
+        <button class="btn-action" onclick="toggleColor()">Zmień Tryb Kolorów</button>
+        <button class="btn-action" onclick="resetCanvas()">Generuj Cząstki</button>
+        <br>
+        <canvas id="canvas-anim" width="380" height="160"></canvas>
+    </div>
+    <script>
+        const canvas = document.getElementById("canvas-anim");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+
+        function resetCanvas() {
+            particles = [];
+            for(let i=0; i<40; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: (Math.random() - 0.5) * 3,
+                    r: Math.random() * 4 + 2
+                });
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = "rgba(22, 33, 62, 0.3)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#e94560";
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+
+        function toggleColor() {
+            document.body.style.backgroundColor = document.body.style.backgroundColor === 'rgb(15, 52, 96)' ? '#1a1a2e' : '#0f3460';
+        }
+
+        resetCanvas();
+        draw();
+    </script>
+</body>
+</html>

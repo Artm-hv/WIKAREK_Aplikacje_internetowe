@@ -1,0 +1,132 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE igrzyskaOlimpijskie [ 
+<!ELEMENT panstwo (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT wynik (#PCDATA)>
+<!ELEMENT zloto	(panstwo,nazwisko,wynik)>
+<!ELEMENT srebro (panstwo,nazwisko,wynik)>
+<!ELEMENT braz 	(panstwo,nazwisko,wynik)>
+<!ELEMENT konkurencja (zloto,srebro,braz)>
+<!ELEMENT plec 	(konkurencja+)>
+<!ELEMENT dyscyplina (plec,plec?)>
+<!ELEMENT igrzyskaOlimpijskie (dyscyplina+)>
+<!ATTLIST igrzyskaOlimpijskie miasto CDATA #REQUIRED>
+<!ATTLIST igrzyskaOlimpijskie rok CDATA #REQUIRED>
+<!ATTLIST dyscyplina nazwa CDATA #REQUIRED>
+<!ATTLIST plec nazwa (K|M) #REQUIRED>
+<!ATTLIST konkurencja nazwa CDATA  #REQUIRED>
+]>
+ <igrzyskaOlimpijskie miasto="Ateny" rok="2004">
+   <dyscyplina nazwa="Lekka Atletyka">
+    <plec nazwa="K">
+      <konkurencja nazwa="Bieg na 100 metrów">
+       <zloto>
+        <panstwo> Polska </panstwo> 
+        <nazwisko> Mala </nazwisko> 
+        <wynik> 11,3 </wynik>
+       </zloto>
+       <srebro>
+        <panstwo> Czechy </panstwo> 
+        <nazwisko> Durek </nazwisko> 
+        <wynik> 14,7 </wynik>
+       </srebro>
+       <braz>
+        <panstwo> Francja </panstwo> 
+        <nazwisko> Olga </nazwisko> 
+        <wynik> 17,9 </wynik>
+       </braz>
+      </konkurencja>
+      <konkurencja nazwa="Bieg na 400 metrów">
+       <zloto>
+        <panstwo> Polska </panstwo> 
+        <nazwisko> Magda </nazwisko> 
+        <wynik> 44,2 </wynik>
+       </zloto>
+       <srebro>
+        <panstwo> Czechy </panstwo> 
+        <nazwisko> Liza </nazwisko> 
+        <wynik> 49,9 </wynik>
+       </srebro>
+       <braz>
+        <panstwo> Niemcy </panstwo> 
+        <nazwisko> Olga </nazwisko> 
+        <wynik> 58,2 </wynik>
+       </braz>
+      </konkurencja>
+   </plec>
+    <plec nazwa="M">
+      <konkurencja nazwa="Bieg na 100 metrów">
+       <zloto>
+        <panstwo> Polska </panstwo> 
+        <nazwisko> Nowak </nazwisko> 
+        <wynik> 10,3 </wynik>
+       </zloto>
+       <srebro>
+        <panstwo> Czechy </panstwo> 
+        <nazwisko> Barek </nazwisko> 
+        <wynik> 10,7 </wynik>
+       </srebro>
+       <braz>
+        <panstwo> Niemcy </panstwo> 
+        <nazwisko> Otto </nazwisko> 
+        <wynik> 10,9 </wynik>
+       </braz>
+      </konkurencja>
+      <konkurencja nazwa="Bieg na 400 metrów">
+       <zloto>
+        <panstwo> Polska </panstwo> 
+        <nazwisko> Barek </nazwisko> 
+        <wynik> 40,2 </wynik>
+       </zloto>
+       <srebro>
+        <panstwo> Czechy </panstwo> 
+        <nazwisko> Borek </nazwisko> 
+        <wynik> 43,9 </wynik>
+       </srebro>
+       <braz>
+        <panstwo> Niemcy </panstwo> 
+        <nazwisko> Olaf </nazwisko> 
+        <wynik> 50,2 </wynik>
+       </braz>
+      </konkurencja>
+   </plec>
+  </dyscyplina>
+   <dyscyplina nazwa="Plywanie">
+    <plec nazwa="K">
+      <konkurencja nazwa="Delfin 100 metrów">
+       <zloto>
+        <panstwo> Polska </panstwo> 
+        <nazwisko> Magda </nazwisko> 
+        <wynik> 23 </wynik>
+       </zloto>
+       <srebro>
+        <panstwo> Czechy </panstwo> 
+        <nazwisko> Durek </nazwisko> 
+        <wynik> 45,7 </wynik>
+       </srebro>
+       <braz>
+        <panstwo> Francja </panstwo> 
+        <nazwisko> Olga </nazwisko> 
+        <wynik> 67,9 </wynik>
+       </braz>
+      </konkurencja>
+      <konkurencja nazwa="Na wznak 100 metrów">
+       <zloto>
+        <panstwo> Grecja </panstwo> 
+        <nazwisko> Magda </nazwisko> 
+        <wynik> 43,2 </wynik>
+       </zloto>
+       <srebro>
+        <panstwo> Czechy </panstwo> 
+        <nazwisko> Liza </nazwisko> 
+        <wynik> 49,9 </wynik>
+       </srebro>
+       <braz>
+        <panstwo> Niemcy </panstwo> 
+        <nazwisko> Olga </nazwisko> 
+        <wynik> 58,2 </wynik>
+       </braz>
+      </konkurencja>
+   </plec>
+  </dyscyplina>
+</igrzyskaOlimpijskie>

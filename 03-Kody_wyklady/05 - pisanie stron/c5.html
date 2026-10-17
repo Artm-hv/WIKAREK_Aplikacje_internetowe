@@ -1,0 +1,63 @@
+<html> 
+	<head>
+		<link rel="icon" type="image/png" sizes="32x32" href="/c5.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/c5.png">	
+		<SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript"> 
+			var timer = new Array();
+			function display(id, wartosc)
+			{
+				clearTimeout(timer[id]);
+				if (document.getElementById) timer[id] = 
+					setTimeout('document.getElementById("' + id + '").style.display = "' + wartosc + '"', 1);
+				else if (document.all) timer[id] = 
+					setTimeout('document.all["' + id + '"].style.display  = "' + wartosc + '"', 1);
+			}
+		</SCRIPT>	
+		<title>Przyklad 3</title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="c5.css" type="text/css">
+	</head>
+ 
+	<body onselectstart="return false" onselect="return false" oncopy="return false">
+	<table cellpadding="0" cellspacing="0" width="100%" onmouseover="display('1','block')
+	  "onmouseout="display('1','none')">
+		<tr>
+			<td class="aut">
+				<a>Przedmiot 1</a>
+				<DIV ID="1">
+					<table cellpadding="0" cellspacing="0">
+						<tr bgcolor=#ffffff>
+							<td><a href="#">Wykład 1</a></td>
+						</tr>
+					</table>
+				</DIV>
+			</td>
+		</tr>
+	</table>
+	<SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript">
+		display('1','None');
+	</SCRIPT>
+	<br/>
+	
+	<table cellpadding="0" cellspacing="0" width="100%" onmouseover="display('10','block')" 
+	  onmouseout="display('10','none')">
+		<tr>
+			<td class="inf">
+				<a>Przedmiot 2</a>
+				<DIV ID="10">
+					<table cellpadding="0" cellspacing="0">
+						<tr bgcolor=#ffffff>
+							<td>
+								<a href="#">Wykład 1</a>
+							</td>
+						</tr>
+					</table>
+				</DIV>
+			</td>
+		</tr>
+	</table>
+	<SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript">
+		display('10','None');
+	</SCRIPT>
+	</body>
+</html>

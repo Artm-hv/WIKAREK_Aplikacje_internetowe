@@ -1,0 +1,26 @@
+<html>
+ <head>
+  <title>Menu</title>
+ </head>
+ <body onload=wp()>
+    <button id="p1" onclick=dodaj()>Zwiększ wartość </button> <BR/><BR/>
+	<button id="p2" onclick=odejmij()>Zmniejsz wartość</button> <BR/><BR/>
+    <div id="wartosc" ></div>
+	
+  <script>
+   var war=5; 
+   function wp()
+   {  
+     document.getElementById("wartosc").innerText = "Obecna wartosc = "+war;
+   };
+   function dodaj()
+   { war = war + 1;
+     document.getElementById("wartosc").innerText = "Obecna wartosc = "+war;
+   };
+    function odejmij()
+   { war = war - 1;
+     document.getElementById("wartosc").innerText = "Obecna wartosc = "+war;
+   };
+   </script>
+ </body>
+</html>

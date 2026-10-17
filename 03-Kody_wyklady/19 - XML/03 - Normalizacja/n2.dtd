@@ -1,0 +1,8 @@
+<!ELEMENT Konkurencja (#PCDATA)>
+<!ELEMENT Plec 	(Konkurencja+)>
+<!ELEMENT Dyscyplina (Plec+)>
+<!ELEMENT Zawody (Dyscyplina+)>
+<!ATTLIST Konkurencja id ID #REQUIRED>
+<!ATTLIST Konkurencja Nazwa CDATA  #REQUIRED>
+<!ATTLIST Plec Nazwa (K|M) #REQUIRED>
+<!ATTLIST Dyscyplina Nazwa CDATA #REQUIRED>

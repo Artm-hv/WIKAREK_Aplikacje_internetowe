@@ -1,0 +1,5 @@
+PTI;Podstawy Technologii Internetowych;2026-10-15
+97882;5.0
+97889;5.0
+12345;4.5
+54321;3.0

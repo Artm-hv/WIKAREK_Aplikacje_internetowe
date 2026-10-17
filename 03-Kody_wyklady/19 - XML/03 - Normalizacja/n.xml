@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE igrzyskaOlimpijskie SYSTEM "n.dtd"> 
+<igrzyskaOlimpijskie miasto="Ateny" rok="2004">
+ &ucz;
+ &zaw;
+ <wynik>
+  <zloto  idz="Z01" idk="K01">20,3</zloto>
+  <srebro idz="Z01" idk="K01">30,4</srebro>
+  <braz   idz="Z01" idk="K01">40,3</braz>
+ </wynik>
+ <wynik>
+  <zloto  idz="Z03" idk="K02">20,3</zloto>
+  <srebro idz="Z04" idk="K02">30,4</srebro>
+  <braz   idz="Z05" idk="K02">40,3</braz>
+ </wynik>
+ <wynik>
+  <zloto  idz="Z06" idk="K03">20,3</zloto>
+  <srebro idz="Z01" idk="K03">30,4</srebro>
+  <braz   idz="Z02" idk="K03">40,3</braz>
+ </wynik>
+ <wynik>
+  <zloto  idz="Z01" idk="K04">20,3</zloto>
+  <srebro idz="Z02" idk="K04">30,4</srebro>
+  <braz   idz="Z02" idk="K04">40,3</braz>
+ </wynik>
+</igrzyskaOlimpijskie>

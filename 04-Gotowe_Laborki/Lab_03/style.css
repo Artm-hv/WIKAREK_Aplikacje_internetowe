@@ -1,0 +1,137 @@
+/* Global reset and box-sizing */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header#main-header {
+    background: #b0b0b0;
+    color: #111;
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+#zegar {
+    background: #222;
+    color: #00ff66;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+/* Main Container */
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 15px 25px;
+    gap: 15px;
+}
+
+/* Horizontal Menu */
+nav.menu-horizontal {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Content Area */
+.content-area {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+}
+
+/* Vertical Menu */
+nav.menu-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 140px;
+    flex-shrink: 0;
+}
+
+/* Menu Buttons */
+.btn-menu {
+    background-color: #e0e0e0;
+    color: #222;
+    border: 2px solid #bbb;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn-menu:hover {
+    background-color: #d0d0d0;
+}
+
+.btn-menu.active {
+    background-color: #e74c3c !important;
+    color: #ffffff !important;
+    border-color: #c0392b !important;
+    box-shadow: 0 2px 6px rgba(231, 76, 60, 0.4);
+}
+
+/* Iframe Window (Okno) */
+.iframe-container {
+    flex: 1;
+    border: 3px solid #7f8c8d;
+    background: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+    min-height: 480px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+iframe#okno_f {
+    width: 100%;
+    height: 100%;
+    border: none;
+    min-height: 480px;
+}
+
+/* Footer */
+footer#main-footer {
+    background: #e74c3c;
+    color: white;
+    text-align: center;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+    .content-area {
+        flex-direction: column;
+    }
+    nav.menu-vertical {
+        flex-direction: row;
+        width: 100%;
+    }
+}

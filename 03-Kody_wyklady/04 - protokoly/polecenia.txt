@@ -1,0 +1,5 @@
+student1
+student1
+binary
+mget * .
+bye

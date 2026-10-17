@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
+<!DOCTYPE baza [
+<!ELEMENT baza (widzowie, spektakle, rezerwacje)>
+<!ELEMENT widzowie (widz+)>
+<!ELEMENT widz (imie, nazwisko, telefon)>
+<!ATTLIST widz id ID #REQUIRED>
+<!ELEMENT imie (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT telefon (#PCDATA)>
+<!ELEMENT spektakle (spektakl+)>
+<!ELEMENT spektakl (tytul, rezyser, scena)>
+<!ATTLIST spektakl id ID #REQUIRED>
+<!ELEMENT tytul (#PCDATA)>
+<!ELEMENT rezyser (#PCDATA)>
+<!ELEMENT scena (#PCDATA)>
+<!ELEMENT rezerwacje (rezerwacja+)>
+<!ELEMENT rezerwacja (data, miejsce)>
+<!ATTLIST rezerwacja id ID #REQUIRED>
+<!ATTLIST rezerwacja ref1 IDREF #REQUIRED>
+<!ATTLIST rezerwacja ref2 IDREF #REQUIRED>
+<!ELEMENT data (#PCDATA)>
+<!ELEMENT miejsce (#PCDATA)>
+]>
+<baza>
+ <widzowie>
+  <widz id="E1_1">
+   <imie>Piotr</imie>
+   <nazwisko>Wisniewski</nazwisko>
+   <telefon>600100200</telefon>
+  </widz>
+  <widz id="E1_2">
+   <imie>Piotr</imie>
+   <nazwisko>Nowak</nazwisko>
+   <telefon>600100200_2</telefon>
+  </widz>
+ </widzowie>
+ <spektakle>
+  <spektakl id="E2_1">
+   <tytul>Hamlet</tytul>
+   <rezyser>J. Kowal</rezyser>
+   <scena>Duza</scena>
+  </spektakl>
+  <spektakl id="E2_2">
+   <tytul>Hamlet (Wariant B)</tytul>
+   <rezyser>J. Kowal (Wariant B)</rezyser>
+   <scena>Duza (Wariant B)</scena>
+  </spektakl>
+ </spektakle>
+ <rezerwacje>
+  <rezerwacja id="R1" ref1="E1_1" ref2="E2_1">
+   <data>2026-11-05</data>
+   <miejsce>Rzad 4 Miejsce 12</miejsce>
+  </rezerwacja>
+  <rezerwacja id="R2" ref1="E1_1" ref2="E2_2">
+   <data>2026-11-05</data>
+   <miejsce>Rzad 4 Miejsce 12</miejsce>
+  </rezerwacja>
+  <rezerwacja id="R3" ref1="E1_2" ref2="E2_1">
+   <data>2026-11-05</data>
+   <miejsce>Rzad 4 Miejsce 12</miejsce>
+  </rezerwacja>
+ </rezerwacje>
+</baza>

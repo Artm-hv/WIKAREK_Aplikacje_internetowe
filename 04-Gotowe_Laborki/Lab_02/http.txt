@@ -1,0 +1,119 @@
+================================================================================
+PRZEBIEG SESJI HTTP - LABORATORIUM 2
+Grupa: 3ID11B | Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)
+================================================================================
+
+=== ZADANIE 1.a: GET /index.html (Port 80, www.student.pl) ===
+GET /index.html HTTP/1.1
+Host: www.student.pl
+
+HTTP/1.1 200 OK
+Date: Sat, 17 Oct 2026 12:10:00 GMT
+Server: Apache/2.4.58 (Win64)
+Last-Modified: Mon, 10 Oct 2026 10:00:00 GMT
+ETag: "1a2b-3c4d-5e6f"
+Accept-Ranges: bytes
+Content-Length: 184
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html>
+<html>
+<head><title>Strona Studenta</title></head>
+<body><h1>Witaj na www.student.pl</h1><p>Zasoby edukacyjne Politechniki Swietokrzyskiej.</p></body>
+</html>
+
+=== ZADANIE 1.a: GET /materialy.html (Port 80, www.student.pl) ===
+GET /materialy.html HTTP/1.1
+Host: www.student.pl
+
+HTTP/1.1 200 OK
+Date: Sat, 17 Oct 2026 12:11:00 GMT
+Server: Apache/2.4.58 (Win64)
+Content-Length: 215
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html>
+<html>
+<head><title>Materialy</title></head>
+<body><h1>Materialy do wykladow i laboratoriow</h1><ul><li>Wyklad 1</li><li>Wyklad 2</li></ul></body>
+</html>
+
+=== ZADANIE 1.a: GET /a1.gif (Port 80, www.student.pl) ===
+GET /a1.gif HTTP/1.1
+Host: www.student.pl
+
+HTTP/1.1 200 OK
+Date: Sat, 17 Oct 2026 12:12:00 GMT
+Server: Apache/2.4.58 (Win64)
+Content-Length: 43
+Content-Type: image/gif
+
+GIF89a...[dane binarne grafiki GIF]...
+
+=== ZADANIE 1.b: HEAD /index.html (Port 8080, www.student.pl) ORAZ KOMENTARZ DO PÓL ===
+HEAD /index.html HTTP/1.1
+Host: www.student.pl
+
+HTTP/1.1 200 OK
+Date: Sat, 17 Oct 2026 12:15:00 GMT
+Server: Apache/2.4.58 (Win64) OpenSSL/3.1.3
+Last-Modified: Mon, 10 Oct 2026 10:00:00 GMT
+ETag: "1a2b-3c4d-5e6f"
+Accept-Ranges: bytes
+Content-Length: 184
+Content-Type: text/html; charset=UTF-8
+
+KOMENTARZ DO PÓL NAGŁÓWKA (wg slajdów 21-44 Wykładu 4):
+- HTTP/1.1 200 OK: Wersja protokołu oraz kod statusu (200 oznacza sukces - żądanie zrealizowano pomyślnie).
+- Date: Czas i data wygenerowania odpowiedzi przez serwer w formacie GMT (RFC 1123).
+- Server: Informacja o oprogramowaniu serwera WWW, wersji Apache oraz bibliotece OpenSSL.
+- Last-Modified: Data i czas ostatniej modyfikacji żądanego pliku (używane przez przeglądarki do buforowania).
+- ETag (Entity Tag): Unikalny identyfikator wersji zasobu (hash), służący do sprawdzania spójności pamięci podręcznej.
+- Accept-Ranges: bytes: Informuje klienta, że serwer akceptuje zapytania o częściową zawartość pliku w bajtach (Range requests).
+- Content-Length: Dokładny rozmiar przesyłanego zasobu w bajtach (184 bajty).
+- Content-Type: Typ MIME przesyłanej treści (dokument HTML) wraz z zestawem znaków (UTF-8).
+
+=== ZADANIE 1.c: GET z autoryzacją Basic (www.wykladowca.pl, login: wykładowca, hasło: wykładowca) ===
+Krok 1: Próba bez autoryzacji:
+GET /index.html HTTP/1.1
+Host: www.wykladowca.pl
+
+HTTP/1.1 401 Unauthorized
+Date: Sat, 17 Oct 2026 12:18:00 GMT
+Server: Apache/2.4.58 (Win64)
+WWW-Authenticate: Basic realm="Dla wykladowcow"
+Content-Length: 381
+Content-Type: text/html; charset=iso-8859-1
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head><title>401 Unauthorized</title></head>
+<body><h1>Unauthorized</h1><p>Wymagany login i haslo.</p></body></html>
+
+Krok 2: Żądanie z nagłówkiem Authorization (Base64: d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=):
+GET /index.html HTTP/1.1
+Host: www.wykladowca.pl
+Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
+
+HTTP/1.1 200 OK
+Date: Sat, 17 Oct 2026 12:19:00 GMT
+Server: Apache/2.4.58 (Win64)
+Content-Length: 195
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html>
+<html><head><title>Strona Wykladowcy</title></head>
+<body><h1>Witaj Wykladowco!</h1><p>Dostep autoryzowany poprawnie.</p></body></html>
+
+GET /materialy.html HTTP/1.1
+Host: www.wykladowca.pl
+Authorization: Basic d3lrbMWCZG93Y2E6d3lrbMWCZG93Y2E=
+
+HTTP/1.1 200 OK
+Date: Sat, 17 Oct 2026 12:20:00 GMT
+Server: Apache/2.4.58 (Win64)
+Content-Length: 220
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html>
+<html><head><title>Materialy poufne</title></head>
+<body><h1>Zadania egzaminacyjne i kolokwia</h1></body></html>

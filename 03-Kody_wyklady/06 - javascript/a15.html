@@ -1,0 +1,24 @@
+<html>
+ <head>
+  <title>Menu</title>
+  <style type="text/css">
+    .hidden { display: none; }
+     ul { list-style: none; padding: 5;}
+  </style>
+ </head>
+ <body>
+  <nav>
+    <button id="m1" aria-label="Otwórz menu">☰</button>
+    <ul id="l1" class="hidden">
+     <li><a href="#">Pozycja 1</a></li>
+     <li><a href="#">Pozycja 2</a></li>
+     <li><a href="#">Pozycja 3</a></li>
+    </ul>
+  </nav>
+  <script>
+   const p1  = document.getElementById('m1');
+   const menu = document.getElementById('l1');
+   p1.addEventListener('click', () => {menu.classList.toggle('hidden');});	
+   </script>
+ </body>
+</html>

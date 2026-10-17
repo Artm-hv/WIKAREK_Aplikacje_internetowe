@@ -1,0 +1,8 @@
+body {font-family:  verdana, tahoma; font-size: 12px; color: #000; background-color: #fff}
+td {font-family: verdana, tahoma; font-size: 16px; color: #000}
+
+a:link,a:visited,a:active {color: #150; text-decoration: none}
+a:hover {color: #510; text-decoration: underline}
+
+.aut {background-color: #737373; padding: 5px; border: 1px solid #000000; text-align: center; font-size: 10px; color: #FFFFFF; letter-spacing: 0px;}
+.inf {background-color: #ffa000; padding: 5px; border: 1px solid #000000; text-align: center; font-size: 10px; color: #000000; letter-spacing: 0px;}

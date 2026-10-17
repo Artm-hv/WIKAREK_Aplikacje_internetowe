@@ -1,0 +1,45 @@
+================================================================================
+PRZEBIEG SESJI FTP (KANAŁ KONTROLNY ORAZ DANYCH) - LABORATORIUM 2
+Grupa: 3ID11B | Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)
+================================================================================
+
+220 FTP Server ready.
+USER student1
+331 Password required for student1.
+PASS student1
+230 User student1 logged in.
+
+[3.a: Pobranie listy plików w trybie PASV]
+PASV
+227 Entering Passive Mode (10,0,0,41,10,25).
+*(Obliczenie portu danych: 10 * 256 + 25 = 2585. Otwarto polaczenie na 10.0.0.41:2585)*
+LIST
+150 Opening ASCII mode data connection for file list.
+226 Transfer complete.
+Zawartość odebrana w kanale danych:
+-rw-r--r--   1 student1 student1      184 Oct 10 10:00 index.html
+-rw-r--r--   1 student1 student1      215 Oct 10 10:05 materialy.html
+
+[3.b: Pobranie pliku z katalogu]
+PASV
+227 Entering Passive Mode (10,0,0,41,10,26).
+*(Obliczenie portu danych: 10 * 256 + 26 = 2586)*
+RETR index.html
+150 Opening BINARY mode data connection for index.html (184 bytes).
+226 Transfer complete.
+
+[3.c: Utworzenie katalogu TMP]
+MKD TMP
+257 "/TMP" directory created.
+CWD TMP
+250 CWD command successful. "/TMP" is current directory.
+
+[3.d: Utworzenie pliku g_3ID11B_97882_97889 w katalogu TMP]
+PASV
+227 Entering Passive Mode (10,0,0,41,10,27).
+*(Obliczenie portu danych: 10 * 256 + 27 = 2587)*
+STOR g_3ID11B_97882_97889.txt
+150 Opening BINARY mode data connection for g_3ID11B_97882_97889.txt.
+226 Transfer complete.
+QUIT
+221 Goodbye.

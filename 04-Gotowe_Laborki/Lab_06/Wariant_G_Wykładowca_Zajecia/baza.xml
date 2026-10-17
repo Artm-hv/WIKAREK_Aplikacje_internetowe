@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
+<!DOCTYPE baza [
+<!ELEMENT baza (wykladowcy, zajecia, prowadzenia)>
+<!ELEMENT wykladowcy (wykladowca+)>
+<!ELEMENT wykladowca (tytul, nazwisko, katedra)>
+<!ATTLIST wykladowca id ID #REQUIRED>
+<!ELEMENT tytul (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT katedra (#PCDATA)>
+<!ELEMENT zajecia (zajecie+)>
+<!ELEMENT zajecie (przedmiot, rodzaj, sala)>
+<!ATTLIST zajecie id ID #REQUIRED>
+<!ELEMENT przedmiot (#PCDATA)>
+<!ELEMENT rodzaj (#PCDATA)>
+<!ELEMENT sala (#PCDATA)>
+<!ELEMENT prowadzenia (przydzial+)>
+<!ELEMENT przydzial (dzien, godzina)>
+<!ATTLIST przydzial id ID #REQUIRED>
+<!ATTLIST przydzial ref1 IDREF #REQUIRED>
+<!ATTLIST przydzial ref2 IDREF #REQUIRED>
+<!ELEMENT dzien (#PCDATA)>
+<!ELEMENT godzina (#PCDATA)>
+]>
+<baza>
+ <wykladowcy>
+  <wykladowca id="E1_1">
+   <tytul>Dr inż.</tytul>
+   <nazwisko>Jarosław Wikarek</nazwisko>
+   <katedra>KIS</katedra>
+  </wykladowca>
+  <wykladowca id="E1_2">
+   <tytul>Dr inż._2</tytul>
+   <nazwisko>Nowak</nazwisko>
+   <katedra>KIS_2</katedra>
+  </wykladowca>
+ </wykladowcy>
+ <zajecia>
+  <zajecie id="E2_1">
+   <przedmiot>Technologie Internetowe</przedmiot>
+   <rodzaj>Laboratorium</rodzaj>
+   <sala>410</sala>
+  </zajecie>
+  <zajecie id="E2_2">
+   <przedmiot>Technologie Internetowe (Wariant B)</przedmiot>
+   <rodzaj>Laboratorium (Wariant B)</rodzaj>
+   <sala>410 (Wariant B)</sala>
+  </zajecie>
+ </zajecia>
+ <prowadzenia>
+  <przydzial id="R1" ref1="E1_1" ref2="E2_1">
+   <dzien>Poniedzialek</dzien>
+   <godzina>10:15</godzina>
+  </przydzial>
+  <przydzial id="R2" ref1="E1_1" ref2="E2_2">
+   <dzien>Poniedzialek</dzien>
+   <godzina>10:15</godzina>
+  </przydzial>
+  <przydzial id="R3" ref1="E1_2" ref2="E2_1">
+   <dzien>Poniedzialek</dzien>
+   <godzina>10:15</godzina>
+  </przydzial>
+ </prowadzenia>
+</baza>

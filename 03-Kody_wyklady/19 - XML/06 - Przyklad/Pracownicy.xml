@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="Pracownicy.xsl"?>
+<!DOCTYPE baza [
+<!ELEMENT baza (stanowiska, pracownicy, pracowanie)>
+<!ELEMENT stanowiska (stanowisko+)>
+<!ELEMENT stanowisko (nazwa, pensja)>
+<!ATTLIST stanowisko id ID #REQUIRED>
+<!ELEMENT nazwa (#PCDATA)>
+<!ELEMENT pensja (#PCDATA)>
+<!ELEMENT pracownicy (pracownik+)>
+<!ELEMENT pracownik (imie, nazwisko, wiek)>
+<!ATTLIST pracownik id ID #REQUIRED>
+<!ELEMENT imie (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT wiek (#PCDATA)>
+<!ELEMENT pracowanie (pracuje+)>
+<!ELEMENT pracuje (lata, miesiace)>
+<!ATTLIST pracuje id ID #REQUIRED>
+<!ATTLIST pracuje pracownik IDREF #REQUIRED>
+<!ATTLIST pracuje stanowisko IDREF #REQUIRED>
+<!ELEMENT lata (#PCDATA)>
+<!ELEMENT miesiace (#PCDATA)>
+]>
+<baza>
+ <stanowiska>
+  <stanowisko id="S1">
+   <nazwa>Kierownik</nazwa>
+   <pensja>4000</pensja>
+  </stanowisko>
+  <stanowisko id="S2">
+   <nazwa>Sprzątacz</nazwa>
+   <pensja>2500</pensja>
+  </stanowisko>
+  <stanowisko id="S3">
+   <nazwa>Księgowy</nazwa>
+   <pensja>3670</pensja>
+  </stanowisko>
+  <stanowisko id="S4">
+   <nazwa>Kasjer</nazwa>
+   <pensja>2720</pensja>
+  </stanowisko>
+  <stanowisko id="S5">
+   <nazwa>Magazynier</nazwa>
+   <pensja>3100</pensja>
+  </stanowisko>
+  <stanowisko id="S6">
+   <nazwa>Pracownik Sezonowy</nazwa>
+   <pensja>2040</pensja>
+  </stanowisko>
+ </stanowiska>
+ <pracownicy>
+  <pracownik id="P1">
+   <imie>Adam</imie>
+   <nazwisko>Małysz</nazwisko>
+   <wiek>36</wiek>
+  </pracownik>
+  <pracownik id="P2">
+   <imie>Ewa</imie>
+   <nazwisko>Nowak</nazwisko>
+   <wiek>28</wiek>
+  </pracownik>
+  <pracownik id="P3">
+   <imie>Kamil</imie>
+   <nazwisko>Kowalski</nazwisko>
+   <wiek>23</wiek>
+  </pracownik>
+  <pracownik id="P4">
+   <imie>Maciek</imie>
+   <nazwisko>Kowal</nazwisko>
+   <wiek>34</wiek>
+  </pracownik>
+  <pracownik id="P5">
+   <imie>Jakub</imie>
+   <nazwisko>Michno</nazwisko>
+   <wiek>49</wiek>
+  </pracownik>
+  <pracownik id="P6">
+   <imie>Bartłomiej</imie>
+   <nazwisko>Martyniuk</nazwisko>
+   <wiek>28</wiek>
+  </pracownik>
+  <pracownik id="P7">
+   <imie>Konrad</imie>
+   <nazwisko>Kondrat</nazwisko>
+   <wiek>18</wiek>
+  </pracownik>
+ </pracownicy>
+  <pracowanie>
+  <pracuje id="PR1" pracownik="P2" stanowisko="S2">
+   <lata>8</lata>
+   <miesiace>5</miesiace>
+  </pracuje>
+  <pracuje id="PR2" pracownik="P5" stanowisko="S6">
+   <lata>1</lata>
+   <miesiace>3</miesiace>
+  </pracuje>
+  <pracuje id="PR3" pracownik="P1" stanowisko="S4">
+   <lata>12</lata>
+   <miesiace>9</miesiace>
+  </pracuje>
+  <pracuje id="PR4" pracownik="P3" stanowisko="S1">
+   <lata>4</lata>
+   <miesiace>11</miesiace>
+  </pracuje>
+  <pracuje id="PR5" pracownik="P4" stanowisko="S3">
+   <lata>6</lata>
+   <miesiace>0</miesiace>
+  </pracuje>
+  <pracuje id="PR6" pracownik="P6" stanowisko="S5">
+   <lata>3</lata>
+   <miesiace>4</miesiace>
+  </pracuje>
+  <pracuje id="PR7" pracownik="P7" stanowisko="S2">
+   <lata>0</lata>
+   <miesiace>2</miesiace>
+  </pracuje>
+ </pracowanie>
+</baza>
+

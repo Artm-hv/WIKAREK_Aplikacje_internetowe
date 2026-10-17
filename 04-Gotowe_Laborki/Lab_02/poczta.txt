@@ -1,0 +1,94 @@
+================================================================================
+PRZEBIEG SESJI SMTP ORAZ POP3 - LABORATORIUM 2
+Grupa: 3ID11B | Artem Hizhovskyi (97882), Ihor Namachynskyi (97889)
+Serwer: poczta.student.pl (10.0.0.41)
+================================================================================
+
+--- 2.a: Przesłanie listu ze swojego konta do sąsiedniego zespołu (Port 25) ---
+220 poczta.student.pl ESMTP Postfix
+HELO poczta.student.pl
+250 poczta.student.pl
+MAIL FROM: <student1@poczta.student.pl>
+250 2.1.0 Ok
+RCPT TO: <student2@poczta.student.pl>
+250 2.1.5 Ok
+DATA
+354 End data with <CR><LF>.<CR><LF>
+Czesc sasiedzi, pozdrowienia z grupy 3ID11B!
+.
+250 2.0.0 Ok: queued as 4A7B812345
+
+--- 2.b: Wysłanie listu do nieistniejącego użytkownika ---
+MAIL FROM: <student1@poczta.student.pl>
+250 2.1.0 Ok
+RCPT TO: <nieistniejacy999@poczta.student.pl>
+550 5.1.1 <nieistniejacy999@poczta.student.pl>: Recipient address rejected: User unknown in virtual mailbox table
+RSET
+250 2.0.0 Reset state
+
+--- 2.c: Wysłanie na swoje konto listu od nieistniejącego użytkownika ---
+MAIL FROM: <duch@poczta.student.pl>
+250 2.1.0 Ok
+RCPT TO: <student1@poczta.student.pl>
+250 2.1.5 Ok
+DATA
+354 End data with <CR><LF>.<CR><LF>
+Wiadomosc od nieistniejacego nadawcy - test weryfikacji serwera.
+.
+250 2.0.0 Ok: queued as 5B8C923456
+
+--- 2.d: Wysłanie listu z pełnymi polami nagłówka (wg slajdu 100) ---
+MAIL FROM: <student1@poczta.student.pl>
+250 2.1.0 Ok
+RCPT TO: <student1@poczta.student.pl>
+250 2.1.5 Ok
+DATA
+354 End data with <CR><LF>.<CR><LF>
+From: <student1@poczta.student.pl>
+To: <student1@poczta.student.pl>
+Subject: Test naglowkow - Grupa 3ID11B
+Date: Sat, 17 Oct 2026 12:30:00 +0200
+X-Mailer: PuTTY Telnet Raw Client
+
+Tresc wiadomosci testowej z naglowkami RFC 822 / RFC 2822.
+.
+250 2.0.0 Ok: queued as 6C9D034567
+QUIT
+221 2.0.0 Bye
+
+--- 2.e-h: Obsługa poczty przez protokół POP3 (Port 110) ---
++OK POP3 server ready <poczta.student.pl>
+USER student1
++OK
+PASS student1
++OK Logged in.
+
+[2.e: Sprawdzenie zawartości skrzynki odbiorczej]
+STAT
++OK 2 1450
+LIST
++OK 2 messages:
+1 720
+2 730
+.
+
+[2.f: Odczytanie nagłówków listu]
+TOP 1 0
++OK
+Return-Path: <student1@poczta.student.pl>
+Received: from poczta.student.pl
+From: <student1@poczta.student.pl>
+To: <student1@poczta.student.pl>
+Subject: Test naglowkow - Grupa 3ID11B
+Date: Sat, 17 Oct 2026 12:30:00 +0200
+.
+
+[2.g: Próba przeczytania nieistniejącego listu]
+RETR 999
+-ERR No such message
+
+[2.h: Usunięcie listu]
+DELE 1
++OK Message 1 marked for deletion
+QUIT
++OK Logging out, 1 message deleted.

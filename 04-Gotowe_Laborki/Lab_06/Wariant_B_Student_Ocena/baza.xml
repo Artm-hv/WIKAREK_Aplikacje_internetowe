@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
+<!DOCTYPE baza [
+<!ELEMENT baza (studenci, przedmioty, oceny)>
+<!ELEMENT studenci (student+)>
+<!ELEMENT student (imie, nazwisko, album)>
+<!ATTLIST student id ID #REQUIRED>
+<!ELEMENT imie (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT album (#PCDATA)>
+<!ELEMENT przedmioty (przedmiot+)>
+<!ELEMENT przedmiot (nazwa, ects, semestr)>
+<!ATTLIST przedmiot id ID #REQUIRED>
+<!ELEMENT nazwa (#PCDATA)>
+<!ELEMENT ects (#PCDATA)>
+<!ELEMENT semestr (#PCDATA)>
+<!ELEMENT oceny (wpis+)>
+<!ELEMENT wpis (termin, ocena)>
+<!ATTLIST wpis id ID #REQUIRED>
+<!ATTLIST wpis ref1 IDREF #REQUIRED>
+<!ATTLIST wpis ref2 IDREF #REQUIRED>
+<!ELEMENT termin (#PCDATA)>
+<!ELEMENT ocena (#PCDATA)>
+]>
+<baza>
+ <studenci>
+  <student id="E1_1">
+   <imie>Artem</imie>
+   <nazwisko>Hizhovskyi</nazwisko>
+   <album>97882</album>
+  </student>
+  <student id="E1_2">
+   <imie>Piotr</imie>
+   <nazwisko>Nowak</nazwisko>
+   <album>97882_2</album>
+  </student>
+ </studenci>
+ <przedmioty>
+  <przedmiot id="E2_1">
+   <nazwa>Aplikacje Internetowe</nazwa>
+   <ects>4</ects>
+   <semestr>5</semestr>
+  </przedmiot>
+  <przedmiot id="E2_2">
+   <nazwa>Aplikacje Internetowe (Wariant B)</nazwa>
+   <ects>4 (Wariant B)</ects>
+   <semestr>5 (Wariant B)</semestr>
+  </przedmiot>
+ </przedmioty>
+ <oceny>
+  <wpis id="R1" ref1="E1_1" ref2="E2_1">
+   <termin>2026-10-17</termin>
+   <ocena>5.0</ocena>
+  </wpis>
+  <wpis id="R2" ref1="E1_1" ref2="E2_2">
+   <termin>2026-10-17</termin>
+   <ocena>5.0</ocena>
+  </wpis>
+  <wpis id="R3" ref1="E1_2" ref2="E2_1">
+   <termin>2026-10-17</termin>
+   <ocena>5.0</ocena>
+  </wpis>
+ </oceny>
+</baza>

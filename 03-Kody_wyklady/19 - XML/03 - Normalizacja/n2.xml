@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Zawody>
+   <Dyscyplina Nazwa="Lekka Atletyka">
+    <Plec Nazwa="K">
+      <Konkurencja id="K01" Nazwa="Bieg na 100 metrów">
+      </Konkurencja>
+      <Konkurencja id="K02" Nazwa="Bieg na 400 metrów">
+      </Konkurencja>
+   </Plec>
+   <Plec Nazwa="M">
+     <Konkurencja id="K03" Nazwa="Bieg na 100 metrów">
+     </Konkurencja>
+     <Konkurencja id="K04" Nazwa="Bieg na 400 metrów">
+     </Konkurencja>
+   </Plec>
+  </Dyscyplina>
+  <Dyscyplina Nazwa="Plywanie">
+  <Plec Nazwa="K">
+   <Konkurencja id="K05" Nazwa="Delfin 100 metrów">
+   </Konkurencja>
+   <Konkurencja id="K06" Nazwa="Na wznak 100 metrów">
+   </Konkurencja>
+   </Plec>
+  </Dyscyplina>
+</Zawody>

@@ -1,0 +1,20 @@
+<form id="F1">
+  <label for="name">Twoje imię:</label>
+  <input type="text" id="imie" name="name">
+  <button type="submit">Wyślij</button>
+  <p id="blad" style="color: red;"></p>
+</form>
+
+<script>
+  const formularz = document.getElementById('F1');
+  const imie_w    = document.getElementById('imie');
+  const komunikat = document.getElementById('blad');
+  function obsluga(event) {
+  if (imie_w.value.trim() === '') 
+    {
+     event.preventDefault(); 
+     komunikat.textContent = 'Musisz wpisać imię przed wysłaniem!';
+    }
+  }
+  formularz.addEventListener('submit', obsluga);
+</script>

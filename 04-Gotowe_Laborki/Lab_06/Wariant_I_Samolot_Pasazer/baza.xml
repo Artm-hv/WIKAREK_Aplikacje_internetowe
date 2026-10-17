@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
+<!DOCTYPE baza [
+<!ELEMENT baza (pasazerowie, loty, rezerwacje)>
+<!ELEMENT pasazerowie (pasazer+)>
+<!ELEMENT pasazer (imie, nazwisko, paszport)>
+<!ATTLIST pasazer id ID #REQUIRED>
+<!ELEMENT imie (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT paszport (#PCDATA)>
+<!ELEMENT loty (lot+)>
+<!ELEMENT lot (numer_lotu, skad, dokad)>
+<!ATTLIST lot id ID #REQUIRED>
+<!ELEMENT numer_lotu (#PCDATA)>
+<!ELEMENT skad (#PCDATA)>
+<!ELEMENT dokad (#PCDATA)>
+<!ELEMENT rezerwacje (bilet+)>
+<!ELEMENT bilet (klasa, miejsce)>
+<!ATTLIST bilet id ID #REQUIRED>
+<!ATTLIST bilet ref1 IDREF #REQUIRED>
+<!ATTLIST bilet ref2 IDREF #REQUIRED>
+<!ELEMENT klasa (#PCDATA)>
+<!ELEMENT miejsce (#PCDATA)>
+]>
+<baza>
+ <pasazerowie>
+  <pasazer id="E1_1">
+   <imie>Krzysztof</imie>
+   <nazwisko>Kozlowski</nazwisko>
+   <paszport>EA987654</paszport>
+  </pasazer>
+  <pasazer id="E1_2">
+   <imie>Piotr</imie>
+   <nazwisko>Nowak</nazwisko>
+   <paszport>EA987654_2</paszport>
+  </pasazer>
+ </pasazerowie>
+ <loty>
+  <lot id="E2_1">
+   <numer_lotu>LO3801</numer_lotu>
+   <skad>Warszawa</skad>
+   <dokad>Kielce</dokad>
+  </lot>
+  <lot id="E2_2">
+   <numer_lotu>LO3801 (Wariant B)</numer_lotu>
+   <skad>Warszawa (Wariant B)</skad>
+   <dokad>Kielce (Wariant B)</dokad>
+  </lot>
+ </loty>
+ <rezerwacje>
+  <bilet id="R1" ref1="E1_1" ref2="E2_1">
+   <klasa>Business</klasa>
+   <miejsce>12A</miejsce>
+  </bilet>
+  <bilet id="R2" ref1="E1_1" ref2="E2_2">
+   <klasa>Business</klasa>
+   <miejsce>12A</miejsce>
+  </bilet>
+  <bilet id="R3" ref1="E1_2" ref2="E2_1">
+   <klasa>Business</klasa>
+   <miejsce>12A</miejsce>
+  </bilet>
+ </rezerwacje>
+</baza>

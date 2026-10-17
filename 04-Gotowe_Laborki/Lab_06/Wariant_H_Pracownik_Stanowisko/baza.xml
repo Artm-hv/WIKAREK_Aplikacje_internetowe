@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="relacja.xsl"?>
+<!DOCTYPE baza [
+<!ELEMENT baza (pracownicy, stanowiska, pracowanie)>
+<!ELEMENT pracownicy (pracownik+)>
+<!ELEMENT pracownik (imie, nazwisko, wiek)>
+<!ATTLIST pracownik id ID #REQUIRED>
+<!ELEMENT imie (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT wiek (#PCDATA)>
+<!ELEMENT stanowiska (stanowisko+)>
+<!ELEMENT stanowisko (nazwa, pensja, dzial)>
+<!ATTLIST stanowisko id ID #REQUIRED>
+<!ELEMENT nazwa (#PCDATA)>
+<!ELEMENT pensja (#PCDATA)>
+<!ELEMENT dzial (#PCDATA)>
+<!ELEMENT pracowanie (pracuje+)>
+<!ELEMENT pracuje (lata, miesiace)>
+<!ATTLIST pracuje id ID #REQUIRED>
+<!ATTLIST pracuje ref1 IDREF #REQUIRED>
+<!ATTLIST pracuje ref2 IDREF #REQUIRED>
+<!ELEMENT lata (#PCDATA)>
+<!ELEMENT miesiace (#PCDATA)>
+]>
+<baza>
+ <pracownicy>
+  <pracownik id="E1_1">
+   <imie>Jan</imie>
+   <nazwisko>Kowalski</nazwisko>
+   <wiek>35</wiek>
+  </pracownik>
+  <pracownik id="E1_2">
+   <imie>Piotr</imie>
+   <nazwisko>Nowak</nazwisko>
+   <wiek>35_2</wiek>
+  </pracownik>
+ </pracownicy>
+ <stanowiska>
+  <stanowisko id="E2_1">
+   <nazwa>Kierownik</nazwa>
+   <pensja>5500</pensja>
+   <dzial>IT</dzial>
+  </stanowisko>
+  <stanowisko id="E2_2">
+   <nazwa>Kierownik (Wariant B)</nazwa>
+   <pensja>5500 (Wariant B)</pensja>
+   <dzial>IT (Wariant B)</dzial>
+  </stanowisko>
+ </stanowiska>
+ <pracowanie>
+  <pracuje id="R1" ref1="E1_1" ref2="E2_1">
+   <lata>5</lata>
+   <miesiace>6</miesiace>
+  </pracuje>
+  <pracuje id="R2" ref1="E1_1" ref2="E2_2">
+   <lata>5</lata>
+   <miesiace>6</miesiace>
+  </pracuje>
+  <pracuje id="R3" ref1="E1_2" ref2="E2_1">
+   <lata>5</lata>
+   <miesiace>6</miesiace>
+  </pracuje>
+ </pracowanie>
+</baza>

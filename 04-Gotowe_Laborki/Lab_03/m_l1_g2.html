@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Formatowanie tekstu</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; padding: 25px; line-height: 1.6; }
+        #naglowek-glowny { color: #8e44ad; border-bottom: 3px solid #8e44ad; padding-bottom: 8px; font-size: 22px; }
+        .tekst-wazny { font-weight: bold; color: #c0392b; background: #fadbd8; padding: 2px 6px; border-radius: 3px; }
+        .tekst-kod { font-family: 'Courier New', monospace; background: #eaeded; padding: 2px 5px; color: #2c3e50; }
+        .tekst-kursywa { font-style: italic; color: #2980b9; }
+        .akapit-specjalny { border-left: 4px solid #f39c12; padding-left: 15px; margin: 15px 0; background: #fef9e7; }
+        #stopka-unikalna { font-size: 12px; color: #7f8c8d; text-align: right; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2 id="naglowek-glowny">Formatowanie tekstu z selektorami CLASS oraz ID</h2>
+    <p>Akapit standardowy demonstrujący użycie selektora <span class="tekst-kod">.tekst-wazny</span>: <span class="tekst-wazny">Ten tekst jest szczególnie istotny</span>.</p>
+    <div class="akapit-specjalny">
+        <p>Akapit wewnątrz klasy <span class="tekst-kod">.akapit-specjalny</span>. Prezentacja selektora klasy z obramowaniem bocznym oraz <span class="tekst-kursywa">tekstem stylizowanym selektorem .tekst-kursywa</span>.</p>
+    </div>
+    <p>Odwołanie do unikalnego selektora ID <span class="tekst-kod">#naglowek-glowny</span> oraz <span class="tekst-kod">#stopka-unikalna</span> gwarantuje precyzyjne adresowanie stylów zgodnie z regułami CSS3 (Wykład 5, slajdy 40-55).</p>
+    <p id="stopka-unikalna">Element ostylowany za pomocą selektora ID #stopka-unikalna | Grupa 3ID11B</p>
+</body>
+</html>

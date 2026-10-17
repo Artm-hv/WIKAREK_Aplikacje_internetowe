@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <link rel="stylesheet" type="text/css" href="fstyle.css">
+</head>
+<body>
+<div id="formularz">
+  <form method="post" action="kontakt.php">	
+   <label>Imię i Nazwisko</label>
+    <input name="name" placeholder="Podaj Imie i Nazwisko">
+   <label>Email</label>
+    <input name="email" type="email" placeholder="np.: jan.kowalski@gmail.com">
+   <label>Wiadomość</label>
+   <textarea name="message" placeholder="Treść wiadomości"></textarea>	
+   <img src="captcha.php" alt="captcha">
+   <input name="kod" type="text" placeholder="przepisz tekst z obrazka">
+   <input id="submit" name="submit" type="submit" value=" Wyślij wiadomość ">
+  </form>
+ <p class="copy">Formularz kontaktowy </p>
+</div>
+</body>
+</html>

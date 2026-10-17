@@ -1,0 +1,27 @@
+<html>
+ <head>
+   <title>JavaScript</title>
+  </head>
+ <body>
+  <script>
+   var   ksiazka1 = {autor : "Sienkiewicz", tytul : "Potop"      , oprawa : "Twarda"};
+   var   ksiazka2 = {autor : "Mickiewciz",  tytul : "Pan Tadeusz", oprawa : "Mieka"};
+   var   ksiazka3 = {autor : "Słowacki",    tytul : "Kordian", oprawa : "Mieka"};
+   let ksiazki = [ksiazka1,ksiazka2];
+   document.write("Tablica ma "+ksiazki.length+" elementy");
+   document.write("<BR/>");
+   ksiazki.forEach(function(item, index)
+   {
+    document.write("<p>ksiazki[" + index + "] = " + item.tytul + "</p>");
+   });
+   ksiazki.splice(3,0,ksiazka3);
+   document.write("Tablica ma "+ksiazki.length+" elementy");
+   document.write("<BR/>");
+   ksiazki.forEach(function(item, index)
+   {
+    document.write("<p>ksiazki[" + index + "] = " + item.tytul + "</p>");
+   });
+  </script> 
+ </body>
+</html>
+

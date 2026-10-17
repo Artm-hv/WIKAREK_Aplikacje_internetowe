@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorium PTI - Menu i Okno</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="initApp()">
+
+    <!-- Nagłówek: Nazwa przedmiotu + działający zegar -->
+    <header id="main-header">
+        <span>Laboratorium PTI</span>
+        <span id="zegar">00:00:00</span>
+    </header>
+
+    <div class="main-wrapper">
+        <!-- Menu poziome (g1, g2, g3) -->
+        <nav class="menu-horizontal" aria-label="Menu poziome">
+            <button id="bg1" class="btn-menu active" onclick="setG(1)">Pozycja g1</button>
+            <button id="bg2" class="btn-menu" onclick="setG(2)">Pozycja g2</button>
+            <button id="bg3" class="btn-menu" onclick="setG(3)">Pozycja g3</button>
+        </nav>
+
+        <div class="content-area">
+            <!-- Menu pionowe (l1, l2, l3) -->
+            <nav class="menu-vertical" aria-label="Menu pionowe">
+                <button id="bl1" class="btn-menu active" onclick="setL(1)">Pozycja l1</button>
+                <button id="bl2" class="btn-menu" onclick="setL(2)">Pozycja l2</button>
+                <button id="bl3" class="btn-menu" onclick="setL(3)">Pozycja l3</button>
+            </nav>
+
+            <!-- Okno (iframe) -->
+            <main class="iframe-container">
+                <iframe id="okno_f" name="okno_f" src="m_l1_g1.html" title="Okno zawartości"></iframe>
+            </main>
+        </div>
+    </div>
+
+    <!-- Stopka: Bieżąca data -->
+    <footer id="main-footer">
+        <span id="data-stopka">Dzisiaj jest: --.--.----</span>
+    </footer>
+
+    <script>
+        let currentL = 1;
+        let currentG = 1;
+
+        // Działający zegar (wg wzorca z a14.html wykladowcy)
+        function pokazZegar() {
+            const teraz = new Date();
+            let h = teraz.getHours();
+            let m = teraz.getMinutes();
+            let s = teraz.getSeconds();
+            h = h < 10 ? "0" + h : h;
+            m = m < 10 ? "0" + m : m;
+            s = s < 10 ? "0" + s : s;
+            document.getElementById("zegar").innerText = `${h}:${m}:${s}`;
+            setTimeout(pokazZegar, 1000);
+        }
+
+        // Bieżąca data w stopce
+        function ustawDate() {
+            const teraz = new Date();
+            const d = String(teraz.getDate()).padStart(2, '0');
+            const m = String(teraz.getMonth() + 1).padStart(2, '0');
+            const y = teraz.getFullYear();
+            document.getElementById("data-stopka").innerText = `Dzisiaj jest: ${d}.${m}.${y}`;
+        }
+
+        // Wybór w menu poziomym
+        function setG(g) {
+            currentG = g;
+            updateButtons();
+            loadIframe();
+        }
+
+        // Wybór w menu pionowym
+        function setL(l) {
+            currentL = l;
+            updateButtons();
+            loadIframe();
+        }
+
+        // Aktualizacja podświetlenia przycisków na czerwono
+        function updateButtons() {
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById('bg' + i).classList.remove('active');
+                document.getElementById('bl' + i).classList.remove('active');
+            }
+            document.getElementById('bg' + currentG).classList.add('active');
+            document.getElementById('bl' + currentL).classList.add('active');
+        }
+
+        // Ładowanie strony do iframe
+        function loadIframe() {
+            let target = `m_l${currentL}_g${currentG}.html`;
+            // Uwzględnienie specyficznych nazw z instrukcji: m_21_g2 oraz m_21_g3 dla l2
+            if (currentL === 2 && currentG === 2) target = 'm_21_g2.html';
+            if (currentL === 2 && currentG === 3) target = 'm_21_g3.html';
+            document.getElementById("okno_f").src = target;
+        }
+
+        function initApp() {
+            pokazZegar();
+            ustawDate();
+            loadIframe();
+        }
+    </script>
+</body>
+</html>

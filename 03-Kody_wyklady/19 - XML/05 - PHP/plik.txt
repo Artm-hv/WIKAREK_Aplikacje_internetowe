@@ -1,0 +1,30 @@
+<Uczestnicy>
+  <Panstwo nazwa="Polska">
+   <Zawodnik id="Z01" PlecZ="M">
+     <Nazwisko>Kowalski</Nazwisko>
+     <Wiek>23</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z02" PlecZ="M">
+     <Nazwisko>Nowak</Nazwisko>
+     <Wiek>42</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z03" PlecZ="K">
+     <Nazwisko>Duda</Nazwisko>
+     <Wiek>31</Wiek>
+   </Zawodnik>
+ </Panstwo>
+ <Panstwo nazwa="Francja">
+   <Zawodnik id="Z04" PlecZ="M">
+     <Nazwisko>Olaf</Nazwisko>
+     <Wiek>22</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z05" PlecZ="M">
+     <Nazwisko>Buda</Nazwisko>
+     <Wiek>44</Wiek>
+   </Zawodnik>
+   <Zawodnik id="Z06" PlecZ="K">
+     <Nazwisko>Graf</Nazwisko>
+     <Wiek>23</Wiek>
+   </Zawodnik>
+ </Panstwo>
+</Uczestnicy>

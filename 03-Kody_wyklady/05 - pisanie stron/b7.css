@@ -1,0 +1,7 @@
+h1.body1 
+{font-family:"Gill Sans", sans-serif;font-size:
+  12pt; margin-left:50px;color:blue}
+.box1 {position: relative;left:50px; 
+ width:150px;color:red; overflow:auto}
+.box2 {position: relative; top:5px;
+ left:50px; color:green; overflow:auto}
