@@ -2,7 +2,7 @@
 
 ### Крок 1. Підготовка каталогів на ВМ
 1. Скопіюйте вміст папки `Pliki_do_skopiowania` на диск D у каталог:
-   `D:\Studenci\Cw_01\3ID11B_01\`
+   `D:\Studenci\Cw_01\3ID11B_06\`
    *(Переконайтеся, що папки `historia/`, `ssl/`, `error/`, `meble/`, `meble80/`, `meble443/`, `auta/`, `auta80/` успішно скопійовані).*
 
 ---
@@ -11,7 +11,7 @@
 1. Відкрийте командний рядок CMD від імені адміністратора.
 2. Виконайте команду генерації 2048-бітного ключа та сертифіката (якщо файлів ще немає):
    ```cmd
-   cd D:\Studenci\Cw_01\3ID11B_01\ssl
+   cd D:\Studenci\Cw_01\3ID11B_06\ssl
    openssl req -new -newkey rsa:2048 -nodes -keyout meble.key -out meble.csr -subj "/C=PL/ST=3ID11B/L=s097882-s097889/O=Politechnika/CN=www.meble.pl"
    openssl x509 -req -days 365 -in meble.csr -signkey meble.key -out meble.crt
    ```
@@ -53,11 +53,11 @@
 4. `https://www.meble.pl` -> Відкривається шифрований сайт `meble443` (перегляньте властивості сертифіката: `CN=www.meble.pl`, `ST=3ID11B`).
 5. `http://www.auta.pl` (та `http://www.auta.pl:8080`) -> Вимагає логін і пароль Basic Auth: введіть `st` / `st` (з `hasla.has`).
 6. `http://www.meble.pl/nieistnieje.html` -> Відображається власна сторінка помилки 404.
-7. Відкрийте `D:\Studenci\Cw_01\3ID11B_01\historia\p.log` у блокноті — перевірте, чи записалися логи переходів.
+7. Відкрийте `D:\Studenci\Cw_01\3ID11B_06\historia\p.log` у блокноті — перевірте, чи записалися логи переходів.
 
 ---
 
 ### Крок 7. Архівування результатів
-Створіть ZIP-архів робочого каталогу `3ID11B_01`:
-`pti_01_3ID11B_01.zip` (або `pti_01_3ID11B_s097882_s097889.zip`).
+Створіть ZIP-архів робочого каталогу `3ID11B_06`:
+`pti_01_3ID11B_06.zip` (або `pti_01_3ID11B_s097882_s097889.zip`).
 Вставте скріншоти у звіт `Sprawozdanie_Lab_01.docx` і здайте роботу викладачу!

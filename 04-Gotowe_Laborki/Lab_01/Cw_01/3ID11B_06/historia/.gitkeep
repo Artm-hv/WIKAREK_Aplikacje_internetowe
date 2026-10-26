@@ -1,0 +1,2 @@
+# Ten plik zapewnia zachowanie katalogu historia w repozytorium Git.
+# Serwer Apache wymaga istnienia katalogu przed utworzeniem pliku CustomLog (p.log).
